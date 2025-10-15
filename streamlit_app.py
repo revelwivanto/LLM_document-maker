@@ -34,7 +34,7 @@ def display_document_examples(doc_folder):
     """Menampilkan file PDF di dalam folder sebagai tombol yang bisa diklik."""
     st.subheader(f"Contoh Template untuk: {doc_folder}")
     if not os.path.isdir(doc_folder):
-        st.warning(f"Folder '{doc_folder}' tidak ditemukan.")
+        st.warning(f"Folder '{doc_folder}' tidak ditemukan, berikan dokumen seseuai dengan nama diatas")
         return
     try:
         pdf_files = [f for f in os.listdir(doc_folder) if f.lower().endswith('.pdf')]
@@ -85,7 +85,7 @@ if submitted:
             if st.session_state.budget >= 300_000_000:
                 st.session_state.required_docs = ["BAP", "Review Pekerjaan", "RAB (D. Bidang)", "RKS(D. Bidang)"]
             else:
-                st.session_state.required_docs = ["BAP", "Draf nota dinas izin prinsip(SVP)", "RAB", "RKS", "Nota Dina izin Prinsip"]
+                st.session_state.required_docs = ["BAP", "Draf nota dinas izin prinsip(SVP)", "RAB", "RKS", "Nota Dina izin Prinsip (D. Bidang)"]
         else:
             st.session_state.required_docs = []
     else:
@@ -148,7 +148,7 @@ if st.session_state.selected_pdf_path:
     # --- Tampilkan PDF ---
     pdf_viewer(
         input=st.session_state.pdf_binary_data,
-        width=300,
+        width=500,
         pages_to_render=[st.session_state.current_page],
         # --- DIPERBAIKI: Key sekarang dinamis untuk memaksa render ulang saat halaman berubah ---
         key=f"pdf_viewer_{st.session_state.selected_pdf_path}_{st.session_state.current_page}"
