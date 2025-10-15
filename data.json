@@ -1,0 +1,35 @@
+{
+  "sharedData": {
+    "logo": "https://placehold.co/400x150/003366/FFFFFF?text=Pelindo+Logo",
+    "sender-address": "Jl. Tanjung Mutiara No.1, Surabaya",
+    "date": "October 13, 2025"
+  },
+  "documents": [
+    {
+      "Sender-name": "Creative Lab Company",
+      "invoice-number": "INV/2025/X/101",
+      "client-name": "Peter Fields",
+      "client-address": "123 Anywhere St, Any City",
+      "client-phone": "+123 456 7890",
+      "item1-name": "Dell UltraSharp U2723QE Monitor",
+      "item1-quantity": "10",
+      "item1-price": "Rp 8.000.000",
+      "item1-total": "Rp 80.000.000",
+      "item2-name": "Custom Build PC (Ryzen 7, 32GB RAM)",
+      "item2-quantity": "10",
+      "item2-price": "Rp 15.000.000",
+      "item2-total": "Rp 150.000.000",
+      "total-price": "Total: Rp 230.000.000"
+    },
+    {
+      "sender-name": "PT. Terminal Petikemas",
+      "title": "Perjanjian Kontrak Pengadaan",
+      "pihak-1": "Ahmad Yusuf",
+      "jabatan-1": "Manager Logistik",
+      "pihak-2": "Kevin Hartono",
+      "jabatan-2": "Supplier IT",
+      "description": "Bahwa pengadaan jasa oleh PIHAK-2, yaitu penyediaan barang berupa 10 unit Monitor dan 10 unit PC.",
+      "message": "Mengetahui,\nIT Infrastructure Assistant Manager"
+    }
+  ]
+}
