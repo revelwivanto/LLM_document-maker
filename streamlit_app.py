@@ -34,7 +34,7 @@ def display_document_examples(doc_folder):
     """Menampilkan file PDF di dalam folder sebagai tombol yang bisa diklik."""
     st.subheader(f"Contoh Template untuk: {doc_folder}")
     if not os.path.isdir(doc_folder):
-        st.warning(f"Folder '{doc_folder}' tidak ditemukan, berikan dokumen seseuai dengan nama diatas")
+        st.warning(f"Folder '{doc_folder}' tidak ditemukan.")
         return
     try:
         pdf_files = [f for f in os.listdir(doc_folder) if f.lower().endswith('.pdf')]
@@ -47,12 +47,11 @@ def display_document_examples(doc_folder):
                 file_path = os.path.join(doc_folder, file)
                 with open(file_path, "rb") as f:
                     st.session_state.pdf_binary_data = f.read()
-                    # Re-open the binary stream for PdfReader
                     f.seek(0)
                     reader = PdfReader(f)
                     st.session_state.total_pages = len(reader.pages)
                 st.session_state.selected_pdf_path = file_path
-                st.session_state.current_page = 1 # Reset ke halaman pertama
+                st.session_state.current_page = 1
     except Exception as e:
         st.error(f"Terjadi kesalahan saat mengakses folder '{doc_folder}': {e}")
 
@@ -85,7 +84,7 @@ if submitted:
             if st.session_state.budget >= 300_000_000:
                 st.session_state.required_docs = ["BAP", "Review Pekerjaan", "RAB (D. Bidang)", "RKS(D. Bidang)"]
             else:
-                st.session_state.required_docs = ["BAP", "Draf nota dinas izin prinsip(SVP)", "RAB", "RKS", "Nota Dina izin Prinsip (D. Bidang)"]
+                st.session_state.required_docs = ["BAP", "Draf nota dinas izin prinsip(SVP)", "RAB", "RKS", "Nota Dina izin Prinsip"]
         else:
             st.session_state.required_docs = []
     else:
@@ -102,55 +101,55 @@ if st.session_state.analysis_done:
         st.info(f"**Budget yang terdeteksi:** {formatted_budget}")
         decision_text = "**Keputusan:** b (Budget >= Rp 300.000.000)" if budget >= 300_000_000 else "**Keputusan:** a (Budget < Rp 300.000.000)"
         st.success(decision_text)
-        st.write("**Dokumen yang dibutuhkan:**")
-        for doc in st.session_state.required_docs:
-            st.markdown(f"- {doc}")
+        
         if st.session_state.required_docs:
-            st.write("---")
-            doc_choice = st.text_input("Dokumen apa yang ingin saya bantu buat?", key="doc_choice_input")
-            if doc_choice:
-                chosen_doc = next((doc for doc in st.session_state.required_docs if doc_choice.lower() in doc.lower()), None)
+            st.write("**Dokumen yang dibutuhkan:**")
+            
+            # --- PERUBAHAN: Tampilkan dokumen sebagai tombol yang bisa diklik ---
+            st.write("*(Klik salah satu tombol di bawah atau ketik nama dokumen di kotak input)*")
+            
+            # Buat beberapa kolom agar tombol tidak terlalu panjang
+            cols = st.columns(len(st.session_state.required_docs))
+            for i, doc_name in enumerate(st.session_state.required_docs):
+                with cols[i]:
+                    if st.button(doc_name, key=f"btn_{doc_name}", use_container_width=True):
+                        # Saat tombol diklik, langsung panggil fungsi untuk menampilkan contoh
+                        display_document_examples(doc_name)
+            
+            st.write("---") # Pemisah visual
+            
+            doc_choice_from_text = st.text_input("Atau ketik nama dokumen di sini:", key="doc_choice_input")
+            if doc_choice_from_text:
+                chosen_doc = next((doc for doc in st.session_state.required_docs if doc_choice_from_text.lower() in doc.lower()), None)
                 if chosen_doc:
                     display_document_examples(chosen_doc)
                 else:
-                    st.warning(f"Tidak ada dokumen yang cocok dengan '{doc_choice}'.")
+                    st.warning(f"Tidak ada dokumen yang cocok dengan '{doc_choice_from_text}'.")
 
 # --- Bagian Bawah: Penampil PDF (hanya muncul jika PDF dipilih) ---
 if st.session_state.selected_pdf_path:
     st.write("---")
     st.subheader("Pratinjau Dokumen")
 
-    # Definisikan callback untuk memperbarui halaman dari input angka
     def jump_to_page():
         st.session_state.current_page = st.session_state.page_jumper
 
     nav_cols = st.columns([2, 2, 3, 5])
-
-    # Tombol "Sebelumnya"
     if nav_cols[0].button('⬅️ Sebelumnya', use_container_width=True):
-        if st.session_state.current_page > 1:
-            st.session_state.current_page -= 1
-
-    # Tombol "Berikutnya"
+        if st.session_state.current_page > 1: st.session_state.current_page -= 1
     if nav_cols[1].button('Berikutnya ➡️', use_container_width=True):
-        if st.session_state.current_page < st.session_state.total_pages:
-            st.session_state.current_page += 1
+        if st.session_state.current_page < st.session_state.total_pages: st.session_state.current_page += 1
 
-    # Input Halaman
     nav_cols[2].number_input(
         f'Halaman (dari {st.session_state.total_pages})',
-        min_value=1,
-        max_value=st.session_state.total_pages,
-        key='page_jumper',
-        on_change=jump_to_page # Gunakan callback untuk penanganan yang lebih baik
+        min_value=1, max_value=st.session_state.total_pages,
+        key='page_jumper', on_change=jump_to_page
     )
     
-    # --- Tampilkan PDF ---
     pdf_viewer(
         input=st.session_state.pdf_binary_data,
-        width=500,
+        width=700,
         pages_to_render=[st.session_state.current_page],
-        # --- DIPERBAIKI: Key sekarang dinamis untuk memaksa render ulang saat halaman berubah ---
         key=f"pdf_viewer_{st.session_state.selected_pdf_path}_{st.session_state.current_page}"
     )
 
