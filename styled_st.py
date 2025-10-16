@@ -7,19 +7,29 @@ from PyPDF2 import PdfReader
 
 # --- Custom CSS Styling ---
 def load_custom_css():
-    st.markdown("""
+    # Define paths to your images
+    danantara_img_path = os.path.join("elements", "danantara.png")
+    petikemas_img_path = os.path.join("elements", "petikemas.png")
+
+    # Convert images to Base64
+    img_danantara_b64 = image_to_base64(danantara_img_path)
+    img_petikemas_b64 = image_to_base64(petikemas_img_path)
+    
+    # Use an f-string to inject the Base64 data into the CSS
+    # Note: All literal CSS curly braces are now doubled {{ and }}
+    st.markdown(f"""
     <style>
     /* Import Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=montserrat:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
     
     /* Main background with pattern */
-    .stApp {
-        background: linear-gradient(135deg, #E8F4F8 0%, #D4E9F7 100%);
-        font-family: 'Poppins', sans-serif;
-    }
+    .stApp {{
+        background: linear-gradient(135deg, #E8F4F8 20%, #D4E9F7 80%);
+        font-family: 'Poppins';
+    }}
     
     /* Add decorative pattern overlay */
-    .stApp::before {
+    .stApp::before {{
         content: '';
         position: fixed;
         top: 0;
@@ -31,225 +41,146 @@ def load_custom_css():
             radial-gradient(circle at 80% 80%, rgba(135, 206, 235, 0.1) 0%, transparent 50%);
         pointer-events: none;
         z-index: 0;
-    }
+    }}
     
     /* Main title styling */
-    h1 {
-        font-family: 'Fredoka', sans-serif !important;
+    h1 {{
+        font-family: 'montserrat' !important;
         color: #2B4C7E !important;
-        font-size: 3rem !important;
+        font-size: 5rem !important;
         font-weight: 700 !important;
         text-align: center !important;
         text-shadow: 3px 3px 6px rgba(0,0,0,0.1);
         margin-bottom: 2rem !important;
         letter-spacing: 2px !important;
-    }
+    }}
     
     /* Subheader styling */
-    h2, h3 {
-        font-family: 'Fredoka', sans-serif !important;
+    h2, h3 {{
+        font-family: 'montserrat' !important;
         color: #2B4C7E !important;
         font-weight: 600 !important;
-    }
+    }}
     
     /* Form container styling */
-    .stForm {
+    .stForm {{
         background: white;
         padding: 2rem;
         border-radius: 20px;
         box-shadow: 0 8px 32px rgba(0,0,0,0.1);
         border: 3px solid #87CEEB;
         position: relative;
-    }
+    }}
     
     /* Text area styling */
-    .stTextArea textarea {
+    .stTextArea textarea {{
         border-radius: 15px !important;
         border: 2px solid #87CEEB !important;
-        font-family: 'Poppins', sans-serif !important;
+        font-family: 'Poppins' !important;
         padding: 1rem !important;
         background: #F8FCFF !important;
-    }
+    }}
+
+    .stTextArea textarea::placeholder {{
+        color: #333333 !important;
+    }}
     
-    .stTextArea textarea:focus {
+    .stTextArea textarea:focus {{
         border-color: #567EBB !important;
         box-shadow: 0 0 0 2px rgba(86, 126, 187, 0.2) !important;
-    }
+    }}
     
     /* Button styling */
-    .stButton > button {
-        background: linear-gradient(135deg, #567EBB 0%, #2B4C7E 100%) !important;
+    .stButton > button {{
+        background: linear-gradient(135deg, #567EBB 20%, #2B4C7E 80%) !important;
         color: white !important;
         border: none !important;
         border-radius: 15px !important;
         padding: 0.75rem 2rem !important;
         font-weight: 600 !important;
-        font-family: 'Fredoka', sans-serif !important;
+        font-family: 'montserrat' !important;
         font-size: 1.1rem !important;
         box-shadow: 0 4px 15px rgba(43, 76, 126, 0.3) !important;
         transition: all 0.3s ease !important;
         text-transform: uppercase !important;
         letter-spacing: 1px !important;
-    }
+    }}
     
-    .stButton > button:hover {
+    .stButton > button:hover {{
         transform: translateY(-2px) !important;
         box-shadow: 0 6px 20px rgba(43, 76, 126, 0.4) !important;
-    }
+    }}
     
-    /* Info, success, warning boxes */
-    .stAlert {
-        border-radius: 15px !important;
-        border: 2px solid !important;
-        padding: 1rem !important;
-        margin: 1rem 0 !important;
-    }
-    
-    div[data-baseweb="notification"] {
-        border-radius: 15px !important;
-        background: white !important;
-        border: 2px solid #87CEEB !important;
-    }
-    
-    /* Info box - blue */
-    .stAlert[kind="info"], div.stMarkdown > div > div[data-testid="stNotificationContentInfo"] {
-        background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%) !important;
-        border-color: #567EBB !important;
-    }
-    
-    /* Success box - green */
-    .stAlert[kind="success"], div.stMarkdown > div > div[data-testid="stNotificationContentSuccess"] {
-        background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%) !important;
-        border-color: #66BB6A !important;
-    }
-    
-    /* Warning box - orange */
-    .stAlert[kind="warning"], div.stMarkdown > div > div[data-testid="stNotificationContentWarning"] {
-        background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%) !important;
-        border-color: #FFA726 !important;
-    }
-    
-    /* Document list styling */
-    .stMarkdown ul {
-        list-style: none !important;
-        padding-left: 0 !important;
-    }
-    
-    .stMarkdown ul li {
-        background: white;
-        margin: 0.5rem 0;
-        padding: 1rem;
-        border-radius: 12px;
-        border-left: 5px solid #567EBB;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        font-weight: 500;
-    }
-    
-    .stMarkdown ul li::before {
-        content: "📄 ";
-        margin-right: 0.5rem;
-    }
-    
-    /* Text input styling */
-    .stTextInput input {
-        border-radius: 12px !important;
-        border: 2px solid #87CEEB !important;
-        padding: 0.75rem !important;
-        font-family: 'Poppins', sans-serif !important;
-        background: white !important;
-    }
-    
-    .stTextInput input:focus {
-        border-color: #567EBB !important;
-        box-shadow: 0 0 0 2px rgba(86, 126, 187, 0.2) !important;
-    }
-    
-    /* Number input styling */
-    .stNumberInput input {
-        border-radius: 12px !important;
-        border: 2px solid #87CEEB !important;
-        background: white !important;
-    }
-    
-    /* Navigation buttons */
-    div[data-testid="column"] .stButton > button {
-        width: 100% !important;
-        background: white !important;
-        color: #2B4C7E !important;
-        border: 2px solid #567EBB !important;
-        font-size: 0.9rem !important;
-    }
-    
-    div[data-testid="column"] .stButton > button:hover {
-        background: #567EBB !important;
-        color: white !important;
-    }
-    
-    /* PDF viewer container */
-    .stMarkdown h3 {
-        color: #2B4C7E !important;
-        border-bottom: 3px solid #87CEEB;
-        padding-bottom: 0.5rem;
-        margin-bottom: 1rem;
-    }
-    
-    /* Divider styling */
-    hr {
-        border: none !important;
-        height: 3px !important;
-        background: linear-gradient(90deg, transparent, #87CEEB, transparent) !important;
-        margin: 2rem 0 !important;
-    }
-    
-    h1::before {
-        content: url('C:/Users/revel/Desktop/code/pelindo/Document_Maker/elements/danantara.png');
+    h1::before {{
+        content: ''; /* 1. Set content to empty to create the box */
+        background-image: url('{img_danantara_b64}'); /* 2. Apply image as background */
+        background-size: contain; /* 3. Make the image fit inside the box */
+        background-repeat: no-repeat;
         display: inline-block;
-        width: 24px;
-        height: 24px;
-        margin-right: 0.5rem;
-    }
+        width: 240px;  
+        height: 240px;
+        margin-right: 0.75rem;
+        vertical-align: middle;
+    }}
 
-    h1::after {
-        content: url('elements/petikemas.png');
+    h1::after {{
+        content: '';
+        background-image: url('{img_petikemas_b64}');
+        background-size: contain;
+        background-repeat: no-repeat;
         display: inline-block;
-        width: 24px;
-        height: 24px;
-        margin-left: 0.5rem;
-    }
+        width: 240px; 
+        height: 60px;
+        margin-left: 1rem;
+        vertical-align: middle;
+    }}
+
+    .sttext_area {{
+        color: #000000;
+    }}
     
-    /* Scrollbar styling */
-    ::-webkit-scrollbar {
+    ::-webkit-scrollbar {{
         width: 12px;
-    }
+    }}
     
-    ::-webkit-scrollbar-track {
+    ::-webkit-scrollbar-track {{
         background: #E8F4F8;
         border-radius: 10px;
-    }
+    }}
     
-    ::-webkit-scrollbar-thumb {
+    ::-webkit-scrollbar-thumb {{
         background: linear-gradient(180deg, #567EBB, #2B4C7E);
         border-radius: 10px;
-    }
+    }}
     
-    ::-webkit-scrollbar-thumb:hover {
+    ::-webkit-scrollbar-thumb:hover {{
         background: #2B4C7E;
-    }
+    }}
     
-    /* Add floating decorative elements */
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-    }
+    @keyframes float {{
+        0%, 100% {{ transform: translateY(0px); }}
+        50% {{ transform: translateY(-10px); }}
+    }}
     
-    /* Strong text styling */
-    strong {
+    strong {{
         color: #2B4C7E !important;
         font-weight: 600 !important;
-    }
+    }}
     </style>
     """, unsafe_allow_html=True)
 
+def image_to_base64(image_path):
+    """Converts an image file to a Base64 encoded string for CSS."""
+    try:
+        with open(image_path, "rb") as img_file:
+            # Read the binary data of the image
+            b64_string = base64.b64encode(img_file.read()).decode()
+            # Return it in the format CSS needs
+            return f"data:image/png;base64,{b64_string}"
+    except FileNotFoundError:
+        st.error(f"Image not found at {image_path}. Please check the path.")
+        return ""
+    
 # --- Core Logic (Tidak ada perubahan di sini) ---
 
 def extract_budget(text):
