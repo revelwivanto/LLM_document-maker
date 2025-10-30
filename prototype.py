@@ -14,7 +14,7 @@ st.set_page_config(page_title="Generator Dokumen Cerdas", page_icon="📝", layo
 # Konfigurasi API Key Gemini (PENTING: Gunakan Streamlit Secrets saat deploy)
 try:
     # Coba muat API key dari secrets (untuk deployment)
-    api_key ="AIzaSyDwpv0KP6FezXRfhQiR3rJ6jsErfDN7M_0"
+    api_key =st.secrets.get("GEMINI_API")
     genai.configure(api_key=api_key)
     model = genai.GenerativeModel('gemini-2.5-flash')
 except (KeyError, FileNotFoundError):
