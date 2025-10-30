@@ -1,0 +1,71 @@
+Langkah 1: Ekstraksi Awal (Panggilan LLM #1 - "Si Pengekstrak")
+
+Ini adalah langkah pertama dan paling penting. Tujuannya adalah untuk mengubah prompt mentah pengguna menjadi data terstruktur sebanyak mungkin.
+
+    Input: Prompt asli pengguna ("saya ingin memperpanjang lisensi adobe untuk 100 user seharga 100jt rupiah") DAN konten dari file-file yang diunggah.
+
+    Proses: Anda akan mengirim semua teks ini ke LLM dengan prompt yang dirancang khusus:
+
+    "Anda adalah asisten administrasi yang sangat teliti. Berdasarkan teks berikut, ekstrak informasi yang relevan ke dalam format JSON. Gunakan 'null' jika informasi tidak ditemukan.
+
+    Teks: [Sisipkan prompt pengguna dan konten file di sini]
+
+    Format JSON yang diinginkan:
+    {
+      "Title": "...",
+      "Usulan_anggaran": ...,
+      "Kenapa": "...",
+      "Jumlah_pembelian": ...,
+      "Penerima": "...",
+      ... (dan semua placeholder relevan lainnya)
+    }"
+
+    Output: Sebuah objek JSON. Beberapa field akan terisi (misalnya, Title mungkin menjadi "Perpanjangan Lisensi Adobe"), sementara yang lain akan null (misalnya, BA karena tidak disebutkan).
+
+Langkah 2: Analisis Kesenjangan (Logika Python - "Si Validator")
+
+Ini adalah langkah di mana kita menggunakan logika terprogram yang andal, persis seperti yang Anda sarankan. Tidak ada AI di sini.
+
+    Input: Objek JSON dari Langkah 1.
+
+    Proses:
+
+        Aplikasi Anda memuat daftar placeholder yang wajib diisi untuk "Nota Dina izin Prinsip" dari file templates_config.json.
+
+        Ia melakukan loop pada daftar wajib ini dan membandingkannya dengan JSON yang diterima dari LLM.
+
+        Ia membuat sebuah daftar baru yang disebut data_yang_kurang. Jika BA ada di daftar wajib tetapi nilainya null di JSON, maka BA akan ditambahkan ke data_yang_kurang.
+
+    Output: Sebuah list Python, contoh: ['BA', 'Tanggal', 'Penerima', 'Jabatan_penerima'].
+
+Langkah 3: Interaksi Terfokus (Antarmuka Streamlit - "Si Penanya")
+
+Sekarang aplikasi Anda tahu persis apa yang harus ditanyakan kepada pengguna.
+
+    Input: Daftar data_yang_kurang dari Langkah 2.
+
+    Proses: Aplikasi Streamlit Anda secara dinamis membuat sebuah formulir. Alih-alih menampilkan semua kemungkinan placeholder, ia hanya menampilkan kotak input untuk item-item yang ada di dalam data_yang_kurang.
+
+    Output: Pengguna mengisi formulir yang jauh lebih pendek dan relevan ini.
+
+Langkah 4: Penggabungan Data (Logika Python - "Si Pengumpul")
+
+    Input: Objek JSON awal dari Langkah 1 dan data baru dari formulir di Langkah 3.
+
+    Proses: Program Anda menggabungkan kedua sumber data ini untuk membuat satu objek JSON akhir yang lengkap.
+
+    Output: Objek jsonData yang final dan siap kirim, yang berisi semua informasi yang dibutuhkan.
+
+Langkah 5: Generasi Dokumen (API Call - "Si Penulis")
+
+    Input: Objek jsonData yang sudah lengkap dari Langkah 4.
+
+    Proses: Aplikasi Anda sekarang mengirimkan JSON ini ke Google Apps Script Anda (atau memanggil Google Docs API secara langsung) untuk mengisi template.
+
+    Output: Sebuah dokumen Google Docs yang sudah terisi penuh dan siap untuk diekspor ke .docx.
+
+Kesimpulan & Langkah Selanjutnya
+
+Rencana ini membagi masalah menjadi beberapa bagian yang dapat dikelola. Ia memanfaatkan LLM untuk tugas yang paling cocok untuknya (pemahaman bahasa alami) dan menggunakan logika Python yang andal untuk validasi dan alur kerja.
+
+Langkah selanjutnya yang saya sarankan: Jangan mencoba membangun semuanya sekaligus. Fokuslah hanya pada Langkah 1. Buat sebuah halaman sederhana di Streamlit di mana Anda bisa memasukkan sebuah prompt, menekan tombol, dan melihat objek JSON apa yang berhasil diekstrak oleh LLM. Menyempurnakan prompt untuk ekstraksi ini adalah 80% dari tantangan, dan ini adalah fondasi dari seluruh aplikasi Anda.

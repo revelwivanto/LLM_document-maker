@@ -1,3 +1,10 @@
+PyPDF2
 streamlit
 streamlit-pdf-viewer
-PyPDF2
+pypdf
+google-generativeai
+requests
+gspread               
+google-auth   
+pandas
+st-gsheets-connection

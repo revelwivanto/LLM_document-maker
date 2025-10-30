@@ -1,0 +1,43 @@
+{
+  "google_doc_id": "1I_mh2MThsqqzM0eRSRUR4Q4b2rrOU93EV1YtgelemLI",
+  "placeholders": {
+    "google_doc_id": "1I_mh2MThsqqzM0eRSRUR4Q4b2rrOU93EV1YtgelemLI",
+    "Title_uppercase": {
+      "instruction": "{Title in all uppercase}",
+      "description": "Judul utama pembuatan dokumen atau nama proyek"
+    },
+    "Bukti_BA": { 
+      "instruction": "{like Isi_BA but more detailed}", 
+      "description": "Detail teknis temuan dari Berita Acara, jelaskan perangkat, lokasi, jumlah, harga, dan penyebab kerusakan." 
+    },
+    "Pembelian": {
+      "instruction": "",
+      "description": "Nama atau uraian barang yang akan dibeli."
+    },
+    "Harga_total_barang_CALCULATED": "HARGA * JUMLAH",
+    "Usulan_anggaran": {
+      "instruction": null,
+      "description": "Jumlah anggaran yang diusulkan untuk pengadaan ini saja (Subtotal sebelum PPN)."
+    },
+    "PPN_barang_CALCULATED": "Usulan_anggaran * 0.11",
+    "Total_harga_CALCULATED": "Usulan_anggaran + (Usulan_anggaran * 0.11)",
+    "Tanggal": {
+      "instruction": "",
+      "description": "Tanggal pembuatan dokumen (format DD/MM/YYYY)."
+    }
+  },
+  "examples": {
+    "Title": "perangkat laptop sebagai penunjang kinerja personil TI",
+    "Bukti_BA": [
+            {"NO": "T1", "OBJEK": "Objek Uji 1", "JUMLAH": "10", "UNIT": "Unit", "HARGA": "Rp 1.000.000", "DETAIL": "Detail uji coba baris 1."},
+            {"NO": "T2", "OBJEK": "Objek Uji 2", "JUMLAH": "5", "UNIT": "Unit", "HARGA": "Rp 2.000.000", "DETAIL": "Detail uji coba baris 2."}
+        ],
+    "Pembelian": "Hard Disk Server 1TB SAS",
+    "Jumlah_pembelian": 1,
+    "Satuan_pembelian": "Unit",
+    "Harga_pemberlian": 17500000,
+    "Harga_total_barang": 17500000,
+    "Usulan_anggaran": 17500000,
+    "Tanggal": "23/10/2025"
+  }
+}

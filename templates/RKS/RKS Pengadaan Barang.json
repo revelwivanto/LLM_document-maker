@@ -1,0 +1,79 @@
+{
+  "google_doc_id": "1SCpgB0ZXmc5qC1R71r12Dcs6-IrUuVPYBdfz0WVAKng", 
+  "placeholders": {
+    "google_doc_id": "1SCpgB0ZXmc5qC1R71r12Dcs6-IrUuVPYBdfz0WVAKng",
+    "BA": {
+      "instruction": "",
+      "description": "Nomor referensi dari Berita Acara (BA) terkait."
+    },
+    "Inti_BA": {
+      "instruction": "{summarize Isi_BA}",
+      "description": "Satu kalimat inti yang merangkum 'Isi_BA'."
+    },
+    "Isi_BA": {
+      "instruction": "{summarize the point of [doc_BA]}",
+      "description": "Ringkasan satu paragraf dari isi dokumen Berita Acara yang diunggah."
+    },
+    "Kenapa": {
+      "instruction": "",
+      "description": "Alasan utama atau justifikasi singkat mengapa dokumen ini dibuat, contoh: 'Kebutuhan penggantian perangkat yang rusak'."
+    },
+    "Alasan_detail": {
+      "instruction": "{detailed account of Alasan}",
+      "description": "Elaborasi Dengan data, dan argumen mengapa alasan penting"
+    },
+    "Title": {
+      "instruction": "",
+      "description": "Judul utama dokumen atau nama proyek, contoh: 'Pengadaan Hard Disk Server TPSHVS03'."
+    },
+    "Budget_2025": {
+      "instruction": null,
+      "description": "Total alokasi budget untuk kategori ini di tahun 2025."
+    },
+    "Terpakai": {
+      "instruction": 0,
+      "description": "Jumlah budget yang sudah terpakai hingga saat ini."
+    },
+    "Usulan_anggaran": {
+      "instruction": null,
+      "description": "Jumlah anggaran yang diusulkan untuk pengadaan ini saja."
+    },
+    "Sisa_anggaran_proyek_CALCULATED": "Budget_2025 - Terpakai - Usulan_anggaran",
+    "Anggaran_kalimat": {
+      "instruction": "{make Usulan_anggaran to a sentence}",
+      "description": "Ubah angka 'Usulan_anggaran' menjadi kalimat terbilang dalam Rupiah."
+    },
+    "Tanggal": {
+      "instruction": "",
+      "description": "Tanggal pembuatan dokumen (format DD/MM/YYYY)."
+    },
+    "RKAP_2025": {
+      "instruction": null,
+      "description": "Total nilai RKAP departemen untuk tahun 2025."
+    },
+    "Nilai_Kontrak_PO_2025": {
+      "instruction": null,
+      "description": "Total nilai kontrak dan PO yang sudah berjalan di tahun 2025."
+    },
+    "PR": {
+      "instruction": null,
+      "description": "Total nilai Purchase Requisition (PR) yang sedang berjalan."
+    },
+    "Budget_pembuatan_RAB_dan_RKS": {
+      "instruction": null,
+      "description": "Total nilai proses RAB dan RKS yang sedang berjalan."
+    },
+    "Sisa_anggaran_departemen_CALCULATED": "RKAP_2025 - (Nilai_Kontrak_PO_2025 + PR + Budget_pembuatan_RAB_dan_RKS)",
+    "Persen_RKAP_CALCULATED": "(Sisa_anggaran_departemen / RKAP_2025) * 100"
+  },
+  "examples": {
+    "BA": "BA.012/1/1-TPS/TI/25",
+    "Inti_BA": "Hasil Pemeriksaan Perangkat HDD Server TPSHVS3",
+    "Isi_BA": "disampaikan bahwa berdasarkan hasil pemeriksaan terhadap pencatatan tiket layanan TI pada aplikasi ITSM, ditemukan adanya kerusakan pada perangkat HDD Server TPSHVS3",
+    "Kenapa": "Kebutuhan penggantian perangkat yang rusak",
+    "Alasan_detail": "Semua User Computer dan Server tidak bisa Logon Desktop dan otomatis semua operasional\nkomputerisasi di seluruh PT.TPS akan terhenti;\nTerjadi kegagalan sinkronisasi User On Premises ke Cloud;\nPenggantian password log on tidak dapat dilakukan;\nTerjadi permasalahan pada time synch antar semua server dan workstation akibat perbedaan\nwaktudi system server;\nTidak ada backup Server DHCP dan tidak ada Backup Server DNS yang akan menjadi critical\npoint, sehingga komunikasi antara semua aplikasi, semua server, dan Client Workstation akan\nterhenti semua (termasuk semua intra network dan internet).",
+    "Title": "Pengadaan Hard Disk Server TPSHVS03",
+    "Anggaran_kalimat": "Tujuh Belas Juta Lima Ratus Ribu Rupiah",
+    "Tanggal": "23/10/2025"
+  }
+}
