@@ -1,0 +1,69 @@
+{
+  "google_doc_id": "1eAceaVFXnhYQtdaYutvRgP5fDuOUL6G3Y_CJqq1UBUY",
+  "placeholders": {
+    "Format_laporan":{  
+      "instruction":"{report format}",
+      "description":"Format laporan yang harus disediakan vendor untuk bukti pelaksanaan pekerjaan"
+    },
+    "Title": { "instruction": "{Title with each words start with capital}", "description": "Judul utama pembuatan dokumen atau nama proyek" },
+    "Title_uppercase": { "instruction": "{Title in all uppercase}", "description": "Judul utama pembuatan dokumen atau nama proyek"}, 
+    "Title_lowercase": {
+        "instruction": "{Title in all lowercase except for abbreviation}",
+        "description": "Judul utama pembuatan dokumen atau nama proyek."
+      },
+    "Pembelian": {
+      "instruction": "{items or services to be purchased}",
+      "description": "Detail barang atau jasa yang ingin debeli, jelaskan perangkat, unit, jumlah, harga dan harga total = jumlah * harga."
+    },
+    "Tujuan": { "instruction": "{barang atau jasa yang ada di [doc_BA]}", "description": "barang atau jasa yang akan diganti" },
+    "Tanggal": { "instruction": "{format: day month year}", "description": "Tanggal pembuatan dokumen" },
+    "Tanggal_tahun": { "instruction": "{extract year from Tanggal}", "description": "Ekstrak tahun dari tanggal pembuatan dokumen" },
+    "Title_summary": { "instruction": "{summarize Title in one sentence}", "description": "Ringkasan satu kalimat dari judul utama dokumen atau nama proyek" },
+    "Pembelian_summary": { "instruction": "{summarize Pembelian in shorter sentence}", "description": "Ringkasan pendek satu kalimat dari uraian barang yang akan dibeli" },
+    "Pembatalan_garansi": { "instruction": "{possible warranty void of Pembelian}", "description": "Jelaskan kondisi atau tindakan yang dapat menyebabkan pembatalan garansi pada barang yang dibeli" },
+    "Contract_execution": {"instruction": "", "description": "durasi maksimal penyelesaian pekerjaan oleh vendor"},
+    "Superintendent_title": { "instruction": "{title of the project superintendent all uppercase}", "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek" },
+    "Superintendent_name": { "instruction": "{name of the project superintendentall uppercase}", "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek" },
+    "Penandatangan1_name": {
+        "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_name will be dodo priambodo all uppercase}",
+        "description": "nama penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    },
+    "Penandatangan1_title": {
+        "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_title will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA all uppercase}",
+        "description": "jabatan penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    }
+  },
+  "examples": {
+    "BA": "SI.02/4/12/3/D4.3.2/D/TPSS-24",
+    "Title": "Perangkat Laptop Sebagai Penunjang Kinerja Personil TI",
+    "Title_uppercase": "PERANGKAT LAPTOP SEBAGAI PENUNJANG KINERJA PERSONIL TI",
+    "Title_lowercase": "perangkat laptop sebagai penunjang kinerja personil TI",
+    "Format_laporan":"rencana kegiatan, pelaksanaan kegiatan, dan dokumentasi kegiatan",
+    "Inti_BA": "Keperluan pembelian laptop untuk mendukung operasional personil TI",
+    "Pembelian": [
+        {
+          "NO": "1",
+          "OBJEK": "laptop Dell Latitude 5430",
+          "JUMLAH": "10",
+          "UNIT": "Unit",
+          "HARGA": "1.000.000",
+          "DETAIL": "spesifikasi i7, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        },
+        {
+          "NO": "2",
+          "OBJEK": "laptop macbook pro 14 inch",
+          "JUMLAH": "5",
+          "UNIT": "Unit",
+          "HARGA": "2.000.000",
+          "DETAIL": "spesifikasi m1, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        }
+      ],
+    "Alasan_summary": "untuk pegawai",
+    "Pembelian_summary": "perangkat laptop beserta aksesorisnya",
+    "Pembatalan_garansi": "Kerusakan unit laptop yang diakibatkan oleh kelalaian user seperti LCD dan atau unit laptop pecah akibat terjatuh atau terbentur",
+    "Contract_execution": "4 (empat) minggu",
+    "Tujuan": "meningkatkan standar kualitas perangkat laptop yang memadai guna mendukung kebutuhan operasional personil TI"
+  }
+}

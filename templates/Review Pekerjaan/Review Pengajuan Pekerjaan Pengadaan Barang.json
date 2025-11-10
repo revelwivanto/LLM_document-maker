@@ -1,0 +1,66 @@
+{
+  "google_doc_id": "1v8OhCvguoQ2IFF2jgBS8ZqOOhkrfRl0G0GXVIEv3JS0",
+  "placeholders": {
+    "BA": {
+      "instruction": "{get the document number of [doc_BA]}",
+      "description": "Nomor referensi dari Berita Acara (BA) terkait."
+    },
+    "Isi_BA": {
+      "instruction": "{summarize in one sentencethe point of [doc_BA]}",
+      "description": "Ringkasan satu kalimat dari isi dokumen lampiran berupa laporan"
+    },
+    "Alasan": {
+      "instruction": "",
+      "description": "Jelaskan dalam satu kalimat mengapa temuan dalam Berita Acara ini penting dan apa risikonya jika tidak ditangani."
+    },
+    "Alasan_detail": {
+      "instruction": "{detailed account of Alasan}",
+      "description": "Elaborasi Dengan data, dan argumen mengapa alasan penting, gunakan \n untuk setiap poin yang berbeda (jangan dibuat satu paragraf) "
+    },
+    "Title": {
+      "instruction": "{make each word start with capital}",
+      "description": "Judul utama pembuatan dokumen atau nama proyek."
+    },
+    "Title_lowercase": {
+      "instruction": "{Title in all lowercase except for abbreviation}",
+      "description": "Judul utama pembuatan dokumen atau nama proyek."
+    },
+    "Prognosa_2025": {
+      "instruction": null,
+      "description": "Total alokasi budget untuk kategori ini di tahun 2025."
+    },
+    "Terpakai": {
+      "instruction": 0,
+      "description": "Jumlah budget yang sudah terpakai hingga saat ini."
+    },
+    "Usulan_anggaran": {
+      "instruction": null,
+      "description": "budget yang dibutuhkan untuk membeli barang/jasa."
+    },
+    "Sisa_anggaran_proyek_CALCULATED": "Prognosa_2025 - Terpakai - Usulan_anggaran",
+    "Anggaran_kalimat": {
+      "instruction": "{make Usulan_anggaran to a sentence}",
+      "description": "Ubah angka 'Usulan_anggaran' menjadi kalimat terbilang dalam Rupiah."
+    },
+    "Tanggal": {
+      "instruction": "{format: day month year}",
+      "description": "Tanggal pembuatan dokumen."
+    },
+    "Tanggal_tahun": {
+      "instruction": "{extract year from Tanggal}",
+      "description": "Ekstrak tahun dari tanggal pembuatan dokumen"
+    }
+  },
+  "examples": {
+    "BA": "SI.02/4/12/3/D4.3.2/D/TPSS-24",
+    "Title": "Perangkat Laptop Sebagai Penunjang Kinerja Personil TI",
+    "Title_lowercase": "perangkat laptop sebagai penunjang kinerja personil TI",
+    "Tujuan": "meningkatkan standar kualitas perangkat laptop yang memadai guna mendukung kebutuhan operasional personil TI",
+    "Tanggal": "23 November 2024",
+    "Isi_BA": "berdasarkan hasil diskusi dengan divisi Human Resource, ditemukan laptop personil mengganggu operasional, maka diperlukan perangkat laptop sebagai penunjang kinerja personil TI",
+    "Alasan": "kebutuhan mendesak untuk menghindari potensi resiko tinggi (high risk) apabila terjadi kerusakan lebih dari 1 (satu) unit HDD.",
+    "Alasan_detail": "Semua User Computer dan Server tidak bisa Logon Desktop dan otomatis semua operasional\nkomputerisasi di seluruh PT.TPS akan terhenti;\nTerjadi kegagalan sinkronisasi User On Premises ke Cloud;\nPenggantian password log on tidak dapat dilakukan;\nTerjadi permasalahan pada time synch antar semua server dan workstation akibat perbedaan\nwaktudi system server;\nTidak ada backup Server DHCP dan tidak ada Backup Server DNS yang akan menjadi critical\npoint, sehingga komunikasi antara semua aplikasi, semua server, dan Client Workstation akan\nterhenti semua (termasuk semua intra network dan internet).",
+    "Usulan_anggaran": 17500000,
+    "Anggaran_kalimat": "Tujuh Belas Juta Lima Ratus Ribu Rupiah"
+  }
+}

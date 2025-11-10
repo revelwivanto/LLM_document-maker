@@ -1,0 +1,119 @@
+{
+  "google_doc_id": "1omzp8pcQXqbuttVNnV3g8bRnI_SfB92FKAvaUNxCOZs",
+  "placeholders": {
+    "Detail_pembelian": {
+      "instruction": "{only fill if the service based purchase}",
+      "description": "Rincian lengkap dari jasa yang akan diberikan."
+    },
+    "Format_laporan":{  
+      "instruction":"{report format}",
+      "description":"Format laporan yang harus disediakan vendor untuk bukti pelaksanaan pekerjaan"
+    },
+    "Pembelian": {
+      "instruction": "{items or services to be purchased}",
+      "description": "Detail barang atau jasa yang ingin debeli, jelaskan perangkat, unit, jumlah, harga dan harga total = jumlah * harga."
+    },
+    
+    "Pokok_pekerjaan": {
+      "instruction": "{detailed scope of work to be performed by the vendor}",
+      "description": "Uraian lengkap mengenai ruang lingkup pekerjaan yang akan dilakukan oleh vendor."
+    },
+    "Title": {
+      "instruction": "{make each word start with capital}",
+      "description": "Judul utama pembuatan dokumen atau nama proyek."
+    },
+    "Title_uppercase": {
+      "instruction": "{Title in all uppercase}",
+      "description": "Judul utama pembuatan dokumen atau nama proyek."
+    },
+    "Title_lowercase": {
+      "instruction": "{Title in all lowercase except for abbreviation}",
+      "description": "Judul utama pembuatan dokumen atau nama proyek."
+    },
+    "Title_summary": {
+      "instruction": "{summarize Title in one sentence}",
+      "description": "Ringkasan satu kalimat dari judul utama dokumen atau nama proyek"
+    },
+    "Tujuan": {
+      "instruction": "",
+      "description": "Tujuan utama dari pengadaan ini."
+    },
+    "Alasan": {
+      "instruction": "",
+      "description": "Jelaskan dalam satu kalimat mengapa temuan dalam Berita Acara ini penting dan apa risikonya jika tidak ditangani."
+    },
+    "Pembatalan_garansi": {
+      "instruction": "{possible warranty void of Pembelian}",
+      "description": "Jelaskan kondisi atau tindakan yang dapat menyebabkan pembatalan garansi pada barang yang dibeli"
+    },
+    "Contract_execution": {
+      "instruction": "",
+      "description": "durasi maksimal penyelesaian pekerjaan oleh vendor"
+    },
+    "Pembelian_summary": {
+      "instruction": "{summarize Pembelian in shorter sentence}",
+      "description": "Ringkasan pendek satu kalimat dari uraian barang yang akan dibeli"
+    },
+    "Superintendent_title": {
+      "instruction": "{title of the project superintendent all uppercase}",
+      "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek"
+    },
+    "Superintendent_name": {
+      "instruction": "{name of the project superintendent all uppercase}",
+      "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek"
+    },
+    "Penandatangan1_title": {
+      "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_title will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA all uppercase}",
+      "description": "jabatan penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    },
+    "Penandatangan1_name": {
+      "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_name will be dodo priambodo all uppercase}",
+      "description": "nama penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    },
+    "Nama_penerima": {
+      "instruction": "{capitalize each word of the recipient name}",
+      "description": "Nama penerima dokumen."
+    },
+    "Jabatan_penerima": {
+      "instruction": "",
+      "description": "Jabatan resmi penerima dokumen."
+    },
+    "Tanggal": {
+      "instruction": "{format: day month year}",
+      "description": "Tanggal pembuatan dokumen."
+    }
+  },
+  "examples": {
+    "Pokok_pekerjaan": "Pekerjaan ini meliputi pengadaan perangkat UPS 15kVA untuk menunjang kinerja Data Center di PT TPS, memastikan unit yang dikirim dalam kondisi siap pakai, dan melakukan instalasi hingga siap beroperasi di ruang Data Center Gedung Pelayanan. Selain itu, penyedia layanan juga bertanggung jawab penuh untuk melakukan dukungan klaim garansi ke prinsipal jika terjadi kegagalan fungsi selama masa garansi berlaku. Tanggung jawab tersebut juga mencakup dukungan Pemeliharaan Preventif (PM) secara berkala serta penyediaan unit cadangan pengganti selama proses klaim garansi atau perbaikan unit utama berlangsung.",
+    "Format_laporan":"rencana kegiatan, pelaksanaan kegiatan, dan dokumentasi kegiatan",
+    "Title": "Perangkat Laptop Sebagai Penunjang Kinerja Personil TI",
+    "Title_uppercase": "PERANGKAT LAPTOP SEBAGAI PENUNJANG KINERJA PERSONIL TI",
+    "Title_lowercase": "perangkat laptop sebagai penunjang kinerja personil TI",
+    "Tujuan": "meningkatkan standar kualitas perangkat laptop yang memadai guna mendukung kebutuhan operasional personil TI",
+    "Pembelian": [
+        {
+          "NO": "1",
+          "OBJEK": "laptop Dell Latitude 5430",
+          "JUMLAH": "10",
+          "UNIT": "Unit",
+          "HARGA": "1.000.000",
+          "DETAIL": "spesifikasi i7, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        },
+        {
+          "NO": "2",
+          "OBJEK": "laptop macbook pro 14 inch",
+          "JUMLAH": "5",
+          "UNIT": "Unit",
+          "HARGA": "2.000.000",
+          "DETAIL": "spesifikasi m1, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        }
+      ],
+    "Alasan": "kebutuhan mendesak untuk menghindari potensi resiko tinggi (high risk) apabila terjadi kerusakan lebih dari 1 (satu) unit HDD.",
+    "Pembatalan_garansi": "Kerusakan unit laptop yang diakibatkan oleh kelalaian user seperti LCD dan atau unit laptop pecah akibat terjatuh atau terbentur",
+    "Contract_execution": "4 (empat) minggu",
+    "Pembelian_summary": "dua jenis laptop dengan total 15 unit",
+    "Tanggal": "23 November 2024"
+  }
+}

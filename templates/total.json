@@ -1,0 +1,215 @@
+{
+  "shared_placeholders": {
+    "Alasan": {
+      "instruction": "",
+      "description": "Jelaskan dalam satu kalimat mengapa temuan dalam Berita Acara ini penting dan apa risikonya jika tidak ditangani."
+    },
+    "Alasan_detail": {
+      "instruction": "{detailed account of Alasan}",
+      "description": "Elaborasi Dengan data, dan argumen mengapa alasan penting, gunakan \n untuk setiap poin yang berbeda (jangan dibuat satu paragraf) "
+    },
+    "BA": {
+      "instruction": "{get the document number of [doc_BA]}",
+      "description": "Nomor referensi dari Berita Acara (BA) terkait."
+    },
+    "Budget_pembuatan_RAB_dan_RKS": {
+      "instruction": null,
+      "description": "Total nilai proses RAB dan RKS yang sedang berjalan."
+    },
+    "Contract_execution": {
+      "instruction": "",
+      "description": "durasi maksimal penyelesaian pekerjaan oleh vendor"
+    },
+    "Isi_BA": {
+      "instruction": "{summarize in one sentencethe point of [doc_BA]}",
+      "description": "Ringkasan satu kalimat dari isi dokumen lampiran berupa laporan"
+    },
+    "Bukti_BA": {
+      "instruction": "{like Isi_BA but more detailed}",
+      "description": "Detail statusquo seperti temuan barang rusak / butuh peremajaan dari Berita Acara, jelaskan perangkat, jumlah, dan penyebab kerusakan. (BUKAN BARANG ATAU JASA YANG INGIN DIBELI)"
+    },
+    "Format_laporan":{  
+      "instruction":"{report format}",
+      "description":"Format laporan yang harus disediakan vendor untuk bukti pelaksanaan pekerjaan"
+    },
+    "Inti_BA": {
+      "instruction": "{summarize in one sentence Isi_BA}",
+      "description": "Satu kalimat inti yang merangkum 'Isi_BA'."
+    },
+    "Jabatan_penerima": {
+      "instruction": "",
+      "description": "Jabatan resmi penerima dokumen."
+    },
+    "Nama_penerima": {
+      "instruction": "{capitalize each word of the recipient name}",
+      "description": "Nama penerima dokumen."
+    },
+    "Jumlah_pembelian": {
+      "instruction": null,
+      "description": "Jumlah barang yang akan dibeli."
+    },
+    "Nilai_Kontrak_PO_2025": {
+      "instruction": null,
+      "description": "Total nilai kontrak dan PO yang sudah berjalan di tahun 2025."
+    },
+    "PPN_barang_CALCULATED": "Usulan_anggaran * 0.11",
+    "PR": {
+      "instruction": null,
+      "description": "Total nilai Purchase Requisition (PR) yang sedang berjalan."
+    },
+    "Pembelian": {
+      "instruction": "{items or services to be purchased}",
+      "description": "Detail barang atau jasa yang ingin debeli, jelaskan perangkat, unit, jumlah, harga dan harga total = jumlah * harga."
+    },
+    "Pokok_pekerjaan": {
+      "instruction": "{detailed scope of work to be performed by the vendor}",
+      "description": "Uraian lengkap mengenai ruang lingkup pekerjaan yang akan dilakukan oleh vendor."
+    },
+    "Detail_pembelian": {
+      "instruction": "{only fill if the service based purchase}",
+      "description": "Rincian lengkap dari jasa yang akan diberikan."
+    },
+    "Pembatalan_garansi": {
+      "instruction": "{possible warranty void of Pembelian}",
+      "description": "Jelaskan kondisi atau tindakan yang dapat menyebabkan pembatalan garansi pada barang yang dibeli"
+    },
+    "Pembelian_summary": {
+      "instruction": "{summarize Pembelian in shorter sentence}",
+      "description": "Ringkasan pendek satu kalimat dari uraian barang yang akan dibeli"
+    },
+    "Superintendent_name": {
+      "instruction": "{name of the project superintendent all uppercase}",
+      "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek"
+    },
+    "Superintendent_title": {
+      "instruction": "{title of the project superintendent all uppercase}",
+      "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek"
+    },
+    "Penandatangan1_name": {
+        "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_name will be dodo priambodo all uppercase}",
+        "description": "nama penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    },
+    "Penandatangan1_title": {
+        "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_title will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA all uppercase}",
+        "description": "jabatan penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    },
+    "Persen_RKAP_CALCULATED": "(Sisa_anggaran_departemen / RKAP_2025) * 100",
+    "Pos_anggaran": {
+      "instruction": "VI. 3 (Biaya Perbaikan Aplikasi Infrastruktur)",
+      "description": "Pos mata anggaran yang akan digunakan."
+    },
+    "Prognosa_2025": {
+      "instruction": null,
+      "description": "Total alokasi budget untuk kategori ini di tahun 2025."
+    },
+    "RKAP_2025": {
+      "instruction": null,
+      "description": "Total nilai RKAP departemen untuk tahun 2025."
+    },
+    "Satuan_pembelian": {
+      "instruction": "",
+      "description": "Satuan dari barang yang dibeli, contoh: 'Unit', 'Lisensi'."
+    },
+    "Sisa_anggaran_departemen_CALCULATED": "RKAP_2025 - (Nilai_Kontrak_PO_2025 + PR + Budget_pembuatan_RAB_dan_RKS)",
+    "Sisa_anggaran_proyek_CALCULATED": "Prognosa_2025 - Terpakai - Usulan_anggaran",
+    "Tanggal": {
+      "instruction": "{format: day month year}",
+      "description": "Tanggal pembuatan dokumen."
+    },
+    "Tanggal_tahun": {
+      "instruction": "{extract year from Tanggal}",
+      "description": "Ekstrak tahun dari tanggal pembuatan dokumen"
+    },
+    "Terpakai": {
+      "instruction": 0,
+      "description": "Jumlah budget yang sudah terpakai hingga saat ini."
+    },
+    "Title": {
+      "instruction": "{make each word start with capital}",
+      "description": "Judul utama pembuatan dokumen atau nama proyek."
+    },
+    "Title_summary": {
+      "instruction": "{summarize Title in one sentence}",
+      "description": "Ringkasan satu kalimat dari judul utama dokumen atau nama proyek"
+    },
+    "Title_uppercase": {
+      "instruction": "{Title in all uppercase}",
+      "description": "Judul utama pembuatan dokumen atau nama proyek."
+    },
+    "Title_lowercase": {
+      "instruction": "{Title in all lowercase except for abbreviation}",
+      "description": "Judul utama pembuatan dokumen atau nama proyek."
+    },
+    "Total_harga_CALCULATED": "Usulan_anggaran + (Usulan_anggaran * 0.11)",
+    "Tujuan": {
+      "instruction": "",
+      "description": "Tujuan utama dari pengadaan ini."
+    },
+    "Usulan_anggaran": {
+      "instruction": "",
+      "description": "budget yang dibutuhkan untuk membeli barang/jasa."
+    },
+    "Anggaran_kalimat": {
+      "instruction": "{make Usulan_anggaran to a sentence}",
+      "description": "Ubah angka 'Usulan_anggaran' menjadi kalimat terbilang dalam Rupiah."
+    },
+    "examples": {
+      "BA": "SI.02/4/12/3/D4.3.2/D/TPSS-24",
+      "Title": "Perangkat Laptop Sebagai Penunjang Kinerja Personil TI",
+      "Title_uppercase": "PERANGKAT LAPTOP SEBAGAI PENUNJANG KINERJA PERSONIL TI",
+      "Title_lowercase": "perangkat laptop sebagai penunjang kinerja personil TI",
+      "Format_laporan":"rencana kegiatan, pelaksanaan kegiatan, dan dokumentasi kegiatan",
+      "Bukti_BA": [
+        {
+            "NO": "1",
+            "OBJEK": "Laptop VP TI",
+            "JUMLAH": "1",
+            "UNIT": "Unit",
+            "DETAIL": "kerusakan pada display"
+        },
+        {
+            "NO": "2",
+            "OBJEK": "Laptop Engineer TI",
+            "JUMLAH": "2",
+            "UNIT": "Unit",
+            "DETAIL": "laptop bekerja lambat dan sering hang"
+        }
+    ],
+      "Tujuan": "meningkatkan standar kualitas perangkat laptop yang memadai guna mendukung kebutuhan operasional personil TI",
+      "Tanggal": "23 November 2024",
+      "Pembelian": [
+        {
+          "NO": "1",
+          "OBJEK": "laptop Dell Latitude 5430",
+          "JUMLAH": "10",
+          "UNIT": "Unit",
+          "HARGA": "1.000.000",
+          "DETAIL": "spesifikasi i7, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        },
+        {
+          "NO": "2",
+          "OBJEK": "laptop macbook pro 14 inch",
+          "JUMLAH": "5",
+          "UNIT": "Unit",
+          "HARGA": "2.000.000",
+          "DETAIL": "spesifikasi m1, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        }
+      ],
+      "Pembelian_summary": "dua jenis laptop dengan total 15 unit",
+      "Pembatalan_garansi": "Kerusakan unit laptop yang diakibatkan oleh kelalaian user seperti LCD dan atau unit laptop pecah akibat terjatuh atau terbentur",
+      "Pokok_pekerjaan": "Pekerjaan ini meliputi pengadaan perangkat UPS 15kVA untuk menunjang kinerja Data Center di PT TPS, memastikan unit yang dikirim dalam kondisi siap pakai, dan melakukan instalasi hingga siap beroperasi di ruang Data Center Gedung Pelayanan. Selain itu, penyedia layanan juga bertanggung jawab penuh untuk melakukan dukungan klaim garansi ke prinsipal jika terjadi kegagalan fungsi selama masa garansi berlaku. Tanggung jawab tersebut juga mencakup dukungan Pemeliharaan Preventif (PM) secara berkala serta penyediaan unit cadangan pengganti selama proses klaim garansi atau perbaikan unit utama berlangsung.",
+      "Contract_execution": "4 (empat) minggu",
+      "Isi_BA": "berdasarkan hasil diskusi dengan divisi Human Resource, ditemukan laptop personil mengganggu operasional, maka diperlukan perangkat laptop sebagai penunjang kinerja personil TI",
+      "Inti_BA": "Hasil Pemeriksaan Perangkat HDD Server TPSHVS3",
+      "Alasan": "kebutuhan mendesak untuk menghindari potensi resiko tinggi (high risk) apabila terjadi kerusakan lebih dari 1 (satu) unit HDD.",
+      "Alasan_detail": "Semua User Computer dan Server tidak bisa Logon Desktop dan otomatis semua operasional\nkomputerisasi di seluruh PT.TPS akan terhenti;\nTerjadi kegagalan sinkronisasi User On Premises ke Cloud;\nPenggantian password log on tidak dapat dilakukan;\nTerjadi permasalahan pada time synch antar semua server dan workstation akibat perbedaan\nwaktudi system server;\nTidak ada backup Server DHCP dan tidak ada Backup Server DNS yang akan menjadi critical\npoint, sehingga komunikasi antara semua aplikasi, semua server, dan Client Workstation akan\nterhenti semua (termasuk semua intra network dan internet).",
+      "Usulan_anggaran": 17500000,
+      "Anggaran_kalimat": "Tujuh Belas Juta Lima Ratus Ribu Rupiah",
+      "Jumlah_pembelian": 1,
+      "Satuan_pembelian": "Unit"
+    }
+  }
+}
+

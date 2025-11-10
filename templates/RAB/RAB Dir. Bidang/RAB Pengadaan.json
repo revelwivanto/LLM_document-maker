@@ -1,5 +1,5 @@
 {
-  "google_doc_id": "1I_mh2MThsqqzM0eRSRUR4Q4b2rrOU93EV1YtgelemLI",
+  "google_doc_id": "1HFbsO-Sefu5JfpfRjmoKfgYkaQiCERD8_Eb6DXZJG_0",
   "placeholders": {
     "google_doc_id": "",
     "Title_uppercase": {
@@ -13,6 +13,14 @@
     "Pembelian_summary": {
       "instruction": "{summarize Pembelian in shorter sentence}",
       "description": "Ringkasan pendek satu kalimat dari uraian barang yang akan dibeli"
+    },
+    "Nama_penerima": {
+      "instruction": "{capitalize each word of the recipient name}",
+      "description": "Nama penerima dokumen."
+    },
+    "Jabatan_penerima": {
+      "instruction": "",
+      "description": "Jabatan resmi penerima dokumen."
     },
     "Usulan_anggaran": {
       "instruction": null,

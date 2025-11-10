@@ -1,0 +1,79 @@
+{
+  "google_doc_id": "1bvOMTAZdfD_GbA8zKf7UoySk5tzz1D-oW7Uod_1hXws",
+  "placeholders": {
+    "Jabatan_penerima": { "instruction": "", "description": "Jabatan resmi penerima dokumen." },
+    "Title": { "instruction": "{Title with each words start with capital}", "description": "Judul utama pembuatan dokumen atau nama proyek." },
+    "Tujuan": { "instruction": "", "description": "Tujuan utama dari pengadaan ini." },
+    "BA": { "instruction": "{get the document number of [doc_BA]}", "description": "Nomor referensi dari Berita Acara (BA) terkait." },
+    "Isi_BA": { "instruction": "{summarize in one sentencethe point of [doc_BA]}", "description": "Ringkasan satu kalimat dari isi dokumen lampiran Ringkasan satu kalimat dari isi dokumen lampiran berupa laporan" },
+    "Inti_BA": { "instruction": "{summarize in one sentence Isi_BA}", "description": "Satu kalimat inti yang merangkum 'Isi_BA'." },
+    "Bukti_BA": { "instruction": "{like Isi_BA but more detailed}", "description": "Detail teknis statusquo seperti temuan barang rusak / butuh peremajaan dari Berita Acara, jelaskan perangkat, jumlah, dan penyebab kerusakan. (BUKAN BARANG ATAU JASA YANG INGIN DIBELI)" },
+    "Alasan": { "instruction": "", "description": "Jelaskan dalam satu kalimat mengapa temuan dalam Berita Acara ini penting dan apa risikonya jika tidak ditangani." },
+    "Alasan_detail": { "instruction": "{detailed account of Alasan}", "description": "Elaborasi Dengan data, dan argumen mengapa alasan penting, gunakan \n untuk setiap poin yang berbeda (jangan dibuat satu paragraf) " },
+    "Prognosa_2025": { "instruction": null, "description": "Total alokasi budget untuk kategori ini di tahun 2025." },
+    "Terpakai": { "instruction": 0, "description": "Jumlah budget yang sudah terpakai hingga saat ini." },
+    "Usulan_anggaran": { "instruction": null, "description": "Jumlah anggaran yang diusulkan untuk pengadaan ini saja." },
+    "Anggaran_kalimat": { "instruction": "{make Usulan_anggaran to a sentence}", "description": "Ubah angka 'Usulan_anggaran' menjadi kalimat terbilang dalam Rupiah." },
+    "Sisa_anggaran_proyek_CALCULATED": "Prognosa_2025 - Terpakai - Usulan_anggaran",
+    "Pos_anggaran": { "instruction": "VI. 3 (Biaya Perbaikan Aplikasi Infrastruktur)", "description": "Pos mata anggaran yang akan digunakan." },
+    "Tanggal": { "instruction": "{format: day month year}", "description": "Tanggal pembuatan dokumen." },
+    "RKAP_2025": { "instruction": null, "description": "Total nilai RKAP departemen untuk tahun 2025." },
+    "Nilai_Kontrak_PO_2025": { "instruction": null, "description": "Total nilai kontrak dan PO yang sudah berjalan di tahun 2025." },
+    "PR": { "instruction": null, "description": "Total nilai Purchase Requisition (PR) yang sedang berjalan." },
+    "Budget_pembuatan_RAB_dan_RKS": { "instruction": null, "description": "Total nilai proses RAB dan RKS yang sedang berjalan." },
+    "Sisa_anggaran_departemen_CALCULATED": "RKAP_2025 - (Nilai_Kontrak_PO_2025 + PR + Budget_pembuatan_RAB_dan_RKS)",
+    "Persen_RKAP_CALCULATED": "(Sisa_anggaran_departemen / RKAP_2025) * 100",
+    "Pembelian": { "instruction": "{items or services to be purchased}", "description": "Detail barang atau jasa yang ingin debeli, jelaskan perangkat, unit, jumlah, harga dan harga total = jumlah * harga." },
+    "Pembelian_summary": {
+      "instruction": "{summarize Pembelian in shorter sentence}",
+      "description": "Ringkasan pendek satu kalimat dari uraian barang yang akan dibeli"
+    }
+  },
+  "examples": {
+    "BA": "SI.02/4/12/3/D4.3.2/D/TPSS-24",
+    "Title": "Perangkat Laptop Sebagai Penunjang Kinerja Personil TI",
+    "Isi_BA": "berdasarkan hasil diskusi dengan divisi Human Resource, maka diperlukan perangkat laptop sebagai penunjang kinerja personil TI",
+    "inti_BA": "Hasil Pemeriksaan Perangkat HDD Server TPSHVS3",
+    "Bukti_BA": [
+        {
+            "NO": "1",
+            "OBJEK": "Laptop VP TI",
+            "JUMLAH": "1",
+            "UNIT": "Unit",
+            "DETAIL": "kerusakan pada display"
+        },
+        {
+            "NO": "2",
+            "OBJEK": "Laptop Engineer TI",
+            "JUMLAH": "2",
+            "UNIT": "Unit",
+            "DETAIL": "laptop bekerja lambat dan sering hang"
+        }
+    ],
+    "Pembelian": [
+        {
+          "NO": "1",
+          "OBJEK": "laptop Dell Latitude 5430",
+          "JUMLAH": "10",
+          "UNIT": "Unit",
+          "HARGA": "1.000.000",
+          "DETAIL": "spesifikasi i7, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        },
+        {
+          "NO": "2",
+          "OBJEK": "laptop macbook pro 14 inch",
+          "JUMLAH": "5",
+          "UNIT": "Unit",
+          "HARGA": "2.000.000",
+          "DETAIL": "spesifikasi m1, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        }
+      ],
+    "Pembelian_Summary": "dua jenis laptop dengan total 15 unit",
+    "Alasan": "kebutuhan mendesak untuk menghindari potensi resiko tinggi (high risk) apabila terjadi kerusakan lebih dari 1 (satu) unit HDD.",
+    "Alasan_detail": "Semua User Computer dan Server tidak bisa Logon Desktop dan otomatis semua operasional\nkomputerisasi di seluruh PT.TPS akan terhenti;\nTerjadi kegagalan sinkronisasi User On Premises ke Cloud;\nPenggantian password log on tidak dapat dilakukan;\nTerjadi permasalahan pada time synch antar semua server dan workstation akibat perbedaan\nwaktudi system server;\nTidak ada backup Server DHCP dan tidak ada Backup Server DNS yang akan menjadi critical\npoint, sehingga komunikasi antara semua aplikasi, semua server, dan Client Workstation akan\nterhenti semua (termasuk semua intra network dan internet).",
+    "Anggaran_kalimat": "Tujuh Belas Juta Lima Ratus Ribu Rupiah",
+    "Tujuan": "meningkatkan standar kualitas perangkat laptop yang memadai guna mendukung kebutuhan operasional personil TI"
+  }
+}

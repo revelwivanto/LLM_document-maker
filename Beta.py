@@ -14,11 +14,28 @@ import ast
 
 conn = st.connection("gsheets", type=GSheetsConnection)
 
-# --- Konstanta Baru: Definisikan path ke template PDF yang akan selalu dibuat ---
-TARGET_PDF_TEMPLATES = [
-    os.path.join("templates", "Nota dinas izin prinsip(SVP)", "Nota dinas Izin Prinsip Pengadaan.pdf"),
+TARGET_PDF_TEMPLATES_PENGADAAN_LESS_300 = [ 
+    os.path.join("templates", "Nota dinas izin prinsip(SVP)", "Nota dinas Izin Prinsip Pengadaan(SVP).pdf"),
+    os.path.join("templates", "Nota dinas izin prinsip", "Nota dinas Izin Prinsip Pengadaan_D.bidang.pdf"),
     os.path.join("templates", "RAB", "RAB", "RAB Pengadaan.pdf"),
-    os.path.join("templates", "RAB", "RKS", "RKS Pengadaan Laptop.pdf")
+    os.path.join("templates", "RAB", "RKS", "RKS Pengadaan.pdf")
+    
+]
+TARGET_PDF_TEMPLATES_PENGADAAN_MORE_300 = [ 
+    os.path.join("templates", "RAB", "RAB Dir. Bidang", "RAB Pengadaan.pdf"),
+    os.path.join("templates", "RAB", "RKS Dir. Bidang", "RKS Pengadaan.pdf"),
+    os.path.join("templates", "Review Pekerjaan", "Review Pengajuan Pekerjaan Pengadaan Barang.pdf") #done
+]
+
+TARGET_PDF_TEMPLATES_LISENSI_MORE_300 = [ # blm
+    os.path.join("templates", "RAB", "RAB Dir. Bidang", "RAB Lisensi.pdf"),
+    os.path.join("templates", "RAB", "RKS Dir. Bidang", "RKS Lisensi.pdf")
+]
+TARGET_PDF_TEMPLATES_LISENSI_LESS_300 = [
+    os.path.join("templates", "Nota dinas izin prinsip(SVP)", "Nota dinas Izin Prinsip Pengadaan(SVP).pdf"),
+    os.path.join("templates", "Nota dinas izin prinsip", "Nota dinas Izin Prinsip Pengadaan_D.bidang.pdf"),
+    os.path.join("templates", "RAB", "RAB", "RAB Pengadaan.pdf"),
+    os.path.join("templates", "RAB", "RKS Dir. Bidang", "RKS Lisensi.pdf")
 ]
 
 # --- Konfigurasi & Inisialisasi ---
@@ -132,138 +149,6 @@ if 'budget' not in st.session_state: st.session_state.budget = None
 # --- Fungsi-fungsi Inti ---
 
 @st.cache_data
-def load_recipe(template_path):
-    """Memuat file resep .json berdasarkan path file template .pdf."""
-    # Mengganti ekstensi .pdf (atau .PDF) dengan .json
-    recipe_path = os.path.splitext(template_path)[0] + ".json"
-    try:
-        with open(recipe_path, 'r', encoding='utf-8') as f:
-            return json.load(f)
-    except FileNotFoundError:
-        st.error(f"File resep tidak ditemukan di: {recipe_path}")
-        return None
-    except Exception as e:
-        st.error(f"Gagal memuat file resep '{os.path.basename(recipe_path)}': {e}")
-        return None
-
-def get_text_from_file(uploaded_file):
-    if uploaded_file is None:
-        return ""
-    full_text = ""
-    try:
-        file_bytes = uploaded_file.getvalue()
-        if uploaded_file.type == "application/pdf":
-            reader = PdfReader(io.BytesIO(file_bytes))
-            for page in reader.pages:
-                if page.extract_text():
-                    full_text += page.extract_text() + "\n"
-        elif uploaded_file.type == "text/plain":
-            full_text = file_bytes.decode("utf-8")
-    except Exception as e:
-        st.warning(f"Gagal membaca file {uploaded_file.name}: {e}")
-    return full_text.strip()
-
-def run_ai_first_pass(initial_prompt, file_uploads, all_placeholders, all_examples):
-    """
-    Membangun prompt, memanggil AI, dan mengekstrak data JSON awal,
-    dengan tambahan output debugging.
-    """
-    if not model:
-        st.error("Model AI tidak dikonfigurasi.")
-        return {"error": "MODEL_AI_TIDAK_TERKONFIGURASI"}
-
-    # --- TAMBAHAN DEBUGGING: Periksa nilai initial_prompt ---
-    st.warning(f"DEBUG: Nilai 'initial_prompt' yang diterima fungsi: '{initial_prompt}'")
-    # --- AKHIR TAMBAHAN DEBUGGING ---
-
-    # Pastikan initial_prompt adalah string, meskipun kosong
-    prompt_text = initial_prompt if initial_prompt else ""
-
-    # --- Bagian Konstruksi Prompt (Sama seperti sebelumnya, tapi gunakan prompt_text) ---
-    json_format_string = json.dumps({key: "..." for key in all_placeholders if not key.endswith('_CALCULATED')}, indent=2)
-    context_text = ""
-    for upload_id, uploaded_file in file_uploads.items():
-        if uploaded_file:
-            file_content = get_text_from_file(uploaded_file)
-            if file_content:
-                 context_text += f"\n\n--- KONTEKS DARI DOKUMEN '{upload_id}' ---\n{file_content}"
-            else:
-                 st.warning(f"File '{upload_id}' diunggah tetapi tidak ada teks yang bisa diekstrak.")
-
-    combined_examples_str = json.dumps(all_examples, indent=2)
-
-    # --- PERUBAHAN: Pastikan f-string menggunakan variabel prompt_text ---
-    prompt = f"""
-    Anda adalah asisten AI yang sangat teliti, bertugas mengekstrak informasi sebanyak mungkin dari teks untuk mengisi beberapa dokumen resmi terkait.
-
-    TUGAS UTAMA:
-    Berdasarkan konteks utama dan dokumen pendukung, coba isi sebanyak mungkin field dalam format JSON di bawah ini. Field ini adalah gabungan dari beberapa dokumen yang akan dibuat.
-
-    KONTEKS UTAMA DARI PENGGUNA:
-    "{prompt_text}"
-    {context_text}
-
-    CONTOH LENGKAP OUTPUT YANG DIHARAPKAN (Ini adalah gabungan contoh, gunakan sebagai referensi gaya, panjang, dan format):
-    ```json
-    {combined_examples_str}
-    ```
-
-    ATURAN PENTING:
-    1.  Fokus untuk mengisi field dalam format JSON ini: {json_format_string}.
-    2.  Jika Anda benar-benar tidak dapat menemukan informasi untuk sebuah field, JANGAN sertakan field tersebut.
-    3.  Output HARUS berupa objek JSON yang valid.
-    4.  Jangan sertakan penjelasan atau markdown (seperti ```json). HANYA objek JSON.
-    5.  Gunakan NAMA FIELD (key) persis seperti yang diminta.
-    6.  Untuk field numerik, kembalikan ANGKA (integer/float), bukan string.
-    7.  Untuk field "Bukti_BA", HARUS berupa ARRAY (list) dari OBJECTS JSON [{{ "NO": ..., "OBJEK": ..., "JUMLAH": ..., "DETAIL": ... }}].
-    8.  Jangan menggunakan kapital diawal kalimat
-    9.  Jangan memberi '.' diakhir kalimat
-
-    """
-    # --- AKHIR PERUBAHAN ---
-
-    # --- Bagian Debugging & Panggilan AI (Sama seperti sebelumnya) ---
-    with st.expander("👀 Lihat Prompt Lengkap yang Dikirim ke AI"):
-        st.code(prompt, language='markdown')
-
-    raw_response_text = None
-    try:
-        response = model.generate_content(prompt)
-        # ... (sisa kode try...except untuk memproses respons) ...
-        # (Salin sisa blok try...except dari versi sebelumnya di sini)
-        if response and response.parts:
-            raw_response_text = response.parts[0].text
-        elif response and hasattr(response, 'text'):
-            raw_response_text = response.text
-        elif response and response.candidates and response.candidates[0].content and response.candidates[0].content.parts:
-            raw_response_text = response.candidates[0].content.parts[0].text
-        else:
-            raw_response_text = "Respons AI tidak memiliki teks yang dapat dibaca."
-
-        with st.expander("👀 Lihat Respons Mentah dari AI"):
-             st.text(raw_response_text if raw_response_text else "Tidak ada respons teks.")
-
-        if not raw_response_text or raw_response_text == "Respons AI tidak memiliki teks yang dapat dibaca.":
-             st.error("AI tidak mengembalikan teks respons.")
-             return {"error": "AI tidak mengembalikan teks."}
-
-        json_string = raw_response_text.strip().replace("```json", "").replace("```", "").strip()
-
-        if not json_string:
-             st.error("Setelah dibersihkan, respons AI kosong.")
-             return {"error": "Respons AI kosong setelah dibersihkan."}
-
-        parsed_json = json.loads(json_string)
-        return parsed_json
-
-    except json.JSONDecodeError as json_err:
-        error_message = f"Gagal mem-parse JSON dari AI: {json_err}. Respons mentah ada di atas."
-        st.error(error_message)
-        return {"error": error_message}
-    except Exception as e:
-        error_message = f"Terjadi kesalahan saat memanggil atau memproses respons AI: {e}"
-        st.error(error_message)
-        return {"error": error_message}
 
 def analyze_budget_with_llm(text_description):
     """
@@ -273,7 +158,6 @@ def analyze_budget_with_llm(text_description):
     if not model or not text_description:
         return None
 
-    # Prompt yang spesifik dan SANGAT KETAT
     prompt = f"""
     Analisis deskripsi berikut untuk menentukan total estimasi budget pengadaan utama dalam Rupiah.
     Fokus pada angka budget utama, bukan RKA P atau nilai kontrak lama.
@@ -324,6 +208,138 @@ def analyze_budget_with_llm(text_description):
         if 'response' in locals():
             st.text_area("Teks mentah dari AI (Budget Analysis):", value=response.text)
         return None
+
+def load_recipe(template_path):
+    """Memuat file resep .json berdasarkan path file template .pdf."""
+    # Mengganti ekstensi .pdf (atau .PDF) dengan .json
+    recipe_path = os.path.splitext(template_path)[0] + ".json"
+    try:
+        with open(recipe_path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        st.error(f"File resep tidak ditemukan di: {recipe_path}")
+        return None
+    except Exception as e:
+        st.error(f"Gagal memuat file resep '{os.path.basename(recipe_path)}': {e}")
+        return None
+
+def run_ai_first_pass(initial_prompt, file_uploads, all_placeholders, all_examples):
+    """
+    Membangun prompt, memanggil AI, dan mengekstrak data JSON awal,
+    dengan tambahan output debugging.
+    """
+    if not model:
+        st.error("Model AI tidak dikonfigurasi.")
+        return {"error": "MODEL_AI_TIDAK_TERKONFIGURASI"}
+
+    # --- TAMBAHAN DEBUGGING: Periksa nilai initial_prompt ---
+    st.warning(f"DEBUG: Nilai 'initial_prompt' yang diterima fungsi: '{initial_prompt}'")
+    # --- AKHIR TAMBAHAN DEBUGGING ---
+
+    # Pastikan initial_prompt adalah string, meskipun kosong
+    prompt_text = initial_prompt if initial_prompt else ""
+
+    # --- Bagian Konstruksi Prompt (Sama seperti sebelumnya, tapi gunakan prompt_text) ---
+    json_format_string = json.dumps({key: "..." for key in all_placeholders if not key.endswith('_CALCULATED')}, indent=2)
+    context_text = ""
+    for upload_id, uploaded_file in file_uploads.items():
+        if uploaded_file:
+            file_content = get_text_from_file(uploaded_file)
+            if file_content:
+                 context_text += f"\n\n--- KONTEKS DARI DOKUMEN '{upload_id}' ---\n{file_content}"
+            else:
+                 st.warning(f"File '{upload_id}' diunggah tetapi tidak ada teks yang bisa diekstrak.")
+
+    combined_examples_str = json.dumps(all_examples, indent=2)
+
+    # --- PERUBAHAN: Pastikan f-string menggunakan variabel prompt_text ---
+    prompt = f"""
+    Anda adalah asisten AI yang sangat teliti, bertugas mengekstrak informasi sebanyak mungkin dari teks untuk mengisi beberapa dokumen resmi terkait.
+
+    TUGAS UTAMA:
+    Berdasarkan konteks utama dan dokumen pendukung, coba isi sebanyak mungkin field dalam format JSON di bawah ini. Field ini adalah gabungan dari beberapa dokumen yang akan dibuat.
+
+    KONTEKS UTAMA DARI PENGGUNA:
+    prompt utama: "{prompt_text}"
+    context pendukung: {context_text}
+
+    CONTOH LENGKAP OUTPUT YANG DIHARAPKAN (Ini adalah gabungan contoh, gunakan sebagai referensi gaya, panjang, dan format):
+    ```json
+    {combined_examples_str}
+    ```
+
+    ATURAN PENTING:
+    1.  Fokus untuk mengisi field dalam format JSON ini: {json_format_string}.
+    2.  Jika Anda benar-benar tidak dapat menemukan informasi untuk sebuah field, JANGAN sertakan field tersebut.
+    3.  Output HARUS berupa objek JSON yang valid.
+    4.  Jangan sertakan penjelasan atau markdown (seperti ```json). HANYA objek JSON.
+    5.  Gunakan NAMA FIELD (key) persis seperti yang diminta.
+    6.  Untuk field numerik, kembalikan ANGKA (integer/float), bukan string.
+    7.  Untuk field "Bukti_BA" dan "Pembelian", HARUS berupa ARRAY (list) dari OBJECTS JSON [{{ "NO": ..., "OBJEK": ..., "JUMLAH": ..., "DETAIL": ... }}].
+    8.  Jangan menggunakan kapital diawal kalimat, kecuali untuk singkatan
+    9.  Jangan memberi '.' diakhir kalimat
+    10. parafrase sebanyak mungkin untuk response kalimat, guna menghindari plagiasi dari konteks yang diberikan, kecuali untuk fileld yang memang meminta nomor, nama spesifik atau Title.
+    11. Prompt utama adalah sumber informasi utama, gunakan konteks pendukung hanya jika informasi tidak ada di prompt utama.
+    12. Apabila contoh ada '/n', maka itu line break yang dianjurkan ada disuatu placeholder.
+    """
+
+    # --- Bagian Debugging & Panggilan AI (Sama seperti sebelumnya) ---
+    with st.expander("👀 Lihat Prompt Lengkap yang Dikirim ke AI"):
+        st.code(prompt, language='markdown')
+
+    raw_response_text = None
+    try:
+        response = model.generate_content(prompt)
+        if response and response.parts:
+            raw_response_text = response.parts[0].text
+        elif response and hasattr(response, 'text'):
+            raw_response_text = response.text
+        elif response and response.candidates and response.candidates[0].content and response.candidates[0].content.parts:
+            raw_response_text = response.candidates[0].content.parts[0].text
+        else:
+            raw_response_text = "Respons AI tidak memiliki teks yang dapat dibaca."
+
+        with st.expander("👀 Lihat Respons Mentah dari AI"):
+             st.text(raw_response_text if raw_response_text else "Tidak ada respons teks.")
+
+        if not raw_response_text or raw_response_text == "Respons AI tidak memiliki teks yang dapat dibaca.":
+             st.error("AI tidak mengembalikan teks respons.")
+             return {"error": "AI tidak mengembalikan teks."}
+
+        json_string = raw_response_text.strip().replace("```json", "").replace("```", "").strip()
+
+        if not json_string:
+             st.error("Setelah dibersihkan, respons AI kosong.")
+             return {"error": "Respons AI kosong setelah dibersihkan."}
+
+        parsed_json = json.loads(json_string)
+        return parsed_json
+
+    except json.JSONDecodeError as json_err:
+        error_message = f"Gagal mem-parse JSON dari AI: {json_err}. Respons mentah ada di atas."
+        st.error(error_message)
+        return {"error": error_message}
+    except Exception as e:
+        error_message = f"Terjadi kesalahan saat memanggil atau memproses respons AI: {e}"
+        st.error(error_message)
+        return {"error": error_message}
+
+def get_text_from_file(uploaded_file):
+    if uploaded_file is None:
+        return ""
+    full_text = ""
+    try:
+        file_bytes = uploaded_file.getvalue()
+        if uploaded_file.type == "application/pdf":
+            reader = PdfReader(io.BytesIO(file_bytes))
+            for page in reader.pages:
+                if page.extract_text():
+                    full_text += page.extract_text() + "\n"
+        elif uploaded_file.type == "text/plain":
+            full_text = file_bytes.decode("utf-8")
+    except Exception as e:
+        st.warning(f"Gagal membaca file {uploaded_file.name}: {e}")
+    return full_text.strip()
 
 def perform_calculations(recipe_placeholders, final_data):
     """
@@ -521,10 +537,7 @@ if st.session_state.page == "initial_input":
         submitted = st.form_submit_button("Analisis & Lanjut ke Pemrosesan Dokumen")
 
         if submitted:
-            # --- PERBAIKAN: Gunakan VARIABEL widget, bukan session state ---
-            # Nilai yang disubmit oleh pengguna sekarang ada di variabel initial_prompt_input
             prompt_value_from_input = initial_prompt_input
-            # -----------------------------------------------------------
 
             if not prompt_value_from_input: # Periksa nilai yang didapat dari widget
                 st.warning("Harap isi deskripsi kebutuhan.")
@@ -614,12 +627,60 @@ elif st.session_state.page == "disambiguation":
         st.session_state.ai_matches = None
         st.rerun()
 
-# --- LANGKAH 1.8: Muat Resep Setelah Konfirmasi ---
+# --- LANGKAH 1.8 (DIMODIFIKASI): Tentukan & Muat Resep yang Relevan ---
 elif st.session_state.page == "load_recipes_and_process":
+    
+    # Ambil data yang dibutuhkan untuk membuat keputusan
+    budget = st.session_state.get('budget')
+    # Ambil prompt yang mungkin sudah di-augmentasi oleh GSheet
+    prompt_text = st.session_state.initial_data.get("prompt", "").lower()
+
+    target_templates_to_load = [] # List kosong untuk diisi
+    
+    st.info(f"Menganalisis kondisi...")
+    st.caption(f"Budget terdeteksi: {budget}")
+    st.caption(f"Prompt (awal): {prompt_text[:70]}...")
+
+    # --- Logika Pemilihan Template Dinamis ---
+    if budget is None:
+        st.error("Budget tidak dapat terdeteksi dari deskripsi Anda. Tidak dapat melanjutkan.")
+        if st.button("Kembali ke Input Awal"):
+            st.session_state.page = "initial_input"; st.rerun()
+        st.stop()
+    
+    elif budget >= 300_000_000:
+        if "lisensi" in prompt_text:
+            print("Kondisi terdeteksi: Budget >= 300jt, Tipe 'Lisensi'.")
+            target_templates_to_load = TARGET_PDF_TEMPLATES_LISENSI_MORE_300
+        elif "pengadaan" in prompt_text:
+            print("Kondisi terdeteksi: Budget >= 300jt, Tipe 'Pengadaan'.")
+            target_templates_to_load = TARGET_PDF_TEMPLATES_PENGADAAN_MORE_300
+        else:
+            print(f"Budget >= 300jt, tapi kata kunci 'lisensi'/'pengadaan' tidak ditemukan. Menggunakan default 'Pengadaan >= 300jt'.")
+            target_templates_to_load = TARGET_PDF_TEMPLATES_PENGADAAN_MORE_300 # Default jika > 300jt
+    
+    else: # Budget < 300,000,000
+        if "lisensi" in prompt_text:
+            print("Kondisi terdeteksi: Budget < 300jt, Tipe 'Lisensi'. Menggunakan default 'Pengadaan < 300jt' (sebelum ada aturan spesifik).")
+            # Default ke pengadaan < 300jt jika tidak ada aturan untuk lisensi < 300jt
+            target_templates_to_load = TARGET_PDF_TEMPLATES_LISENSI_LESS_300
+        elif "pengadaan" in prompt_text:
+            print("Kondisi terdeteksi: Budget < 300jt, Tipe 'Pengadaan'.")
+            target_templates_to_load = TARGET_PDF_TEMPLATES_PENGADAAN_LESS_300
+        else:
+            print("Budget < 300jt, tapi kata kunci tidak ditemukan. Menggunakan default 'Pengadaan < 300jt'.")
+            target_templates_to_load = TARGET_PDF_TEMPLATES_PENGADAAN_LESS_300 # Default jika < 300jt
+
+    if not target_templates_to_load:
+         st.error("Tidak ada set template yang cocok dengan kondisi Anda. Proses dihentikan.")
+         if st.button("Kembali"): st.session_state.page = "initial_input"; st.rerun()
+         st.stop()
+
+    # --- Loop Pemuatan Resep (Sekarang menggunakan list dinamis) ---
     loaded_recipes = {}
     all_recipes_valid = True
-    with st.spinner("Memuat resep dokumen yang dibutuhkan..."):
-        for pdf_path in TARGET_PDF_TEMPLATES:
+    with st.spinner(f"Memuat {len(target_templates_to_load)} resep dokumen yang dipilih..."):
+        for pdf_path in target_templates_to_load: # Menggunakan variabel dinamis
             recipe_data = load_recipe(pdf_path)
             if recipe_data:
                 loaded_recipes[pdf_path] = recipe_data
@@ -633,7 +694,7 @@ elif st.session_state.page == "load_recipes_and_process":
         st.session_state.page = "processing" # Lanjut ke pemrosesan AI
         # Reset state AI/JSON sebelumnya
         st.session_state.ai_extracted_data = None
-        st.session_state.final_combined_data = None # Gunakan nama state yang konsisten
+        st.session_state.final_combined_data = None
         st.rerun()
     else:
         # Jika resep gagal dimuat, beri opsi kembali
@@ -763,6 +824,29 @@ elif st.session_state.page == "processing":
                 else:
                     # Jika tidak terlihat seperti list, mungkin memang teks biasa
                     st.write("DEBUG: Bukti_BA adalah string tapi tidak terlihat seperti list, tidak di-parse.")
+            
+            if "Pembelian" in user_verified_data and isinstance(user_verified_data["Pembelian"], str):
+                pembelian_str = user_verified_data["Pembelian"].strip()
+                # Hanya coba parse jika terlihat seperti list/array
+                if pembelian_str.startswith('[') and pembelian_str.endswith(']'):
+                    st.write("DEBUG: Mencoba mem-parsing string Pembelian...") # Debug message
+                    try:
+                        # Gunakan ast.literal_eval untuk parsing aman string Python
+                        parsed_pembelian = ast.literal_eval(pembelian_str)
+                        # Verifikasi hasilnya adalah list
+                        if isinstance(parsed_pembelian, list):
+                            user_verified_data["Pembelian"] = parsed_pembelian # Ganti string dengan list
+                            st.write("DEBUG: Parsing Pembelian berhasil.")
+                        else:
+                            st.warning("Hasil parsing Pembelian bukan list. Mempertahankan string.")
+                    except (ValueError, SyntaxError) as parse_error:
+                        st.error(f"Gagal mem-parse input Pembelian sebagai list Python: {parse_error}")
+                        st.warning("Pastikan format input untuk Bukti BA adalah list Python yang valid, contoh: [{'NO': '1', ...}]. Mempertahankan input string asli.")
+                    except Exception as e:
+                        st.error(f"Error tak terduga saat parsing Pembelian: {e}")
+                else:
+                    # Jika tidak terlihat seperti list, mungkin memang teks biasa
+                    st.write("DEBUG: Pembelian adalah string tapi tidak terlihat seperti list, tidak di-parse.")
 
             # Lakukan kalkulasi pada data gabungan yang sudah diverifikasi
             st.session_state.final_combined_data = perform_calculations(all_placeholders, user_verified_data)
@@ -807,9 +891,13 @@ elif st.session_state.page == "results":
                             google_doc_id = recipe_data.get("google_doc_id")
                             placeholders_for_this_doc = recipe_data.get("placeholders", {}).keys()
 
-                            if not google_doc_id:
-                                st.error(f"ID Google Doc tidak ditemukan untuk {os.path.basename(pdf_path)}.")
-                                continue # Lanjut ke dokumen berikutnya jika ID hilang
+                            # Validasi ketat: google_doc_id harus ada, tidak None, tidak kosong, dan bertipe string
+                            if not google_doc_id or not isinstance(google_doc_id, str) or not google_doc_id.strip():
+                                st.error(f"ID Google Doc tidak valid untuk {os.path.basename(pdf_path)}. Nilai: {repr(google_doc_id)}")
+                                continue # Lanjut ke dokumen berikutnya jika ID tidak valid
+
+                            # Pastikan google_doc_id adalah string yang sudah di-strip
+                            google_doc_id = google_doc_id.strip()
 
                             # Filter data gabungan, hanya ambil yang relevan untuk dokumen ini
                             data_for_this_doc = {
@@ -835,32 +923,50 @@ elif st.session_state.page == "results":
                         if not batch_payload["documents"]:
                              st.warning("Tidak ada dokumen valid yang bisa dikirim.")
                         else:
-                             st.warning("DEBUG: Payload yang akan dikirim ke Apps Script:")
-                             st.json(batch_payload) # Tampilkan payload sebelum dikirim
-                             print(f"batch_payload: {batch_payload}")
-                             # Kirim payload batch
-                             response = requests.post(
-                                apps_script_url,
-                                headers={'Content-Type': 'application/json'},
-                                json=batch_payload
-                             )
-                             response.raise_for_status()
-                             result = response.json()
-
-                             # --- Tampilkan hasil batch ---
-                             st.subheader("Hasil Pembuatan Dokumen:")
-                             if result.get("status") == "completed":
-                                 for doc_result in result.get("results", []):
-                                     if doc_result.get("status") == "success":
-                                         st.success(f"✅ Dokumen '{doc_result.get('fileName', 'N/A')}' berhasil dibuat.")
-                                         st.markdown(f"   [🔗 Buka Dokumen]({doc_result.get('docUrl')})")
-                                     else:
-                                         st.error(f"❌ Gagal membuat dokumen dari template ID ...{doc_result.get('templateId', 'N/A')[-12:]}: {doc_result.get('message')}")
-                             elif result.get("status") == "error":
-                                  st.error(f"Terjadi error global di Apps Script: {result.get('message')}")
+                             # Validasi akhir: Pastikan semua dokumen dalam payload memiliki google_doc_id yang valid
+                             valid_documents = []
+                             for doc in batch_payload["documents"]:
+                                 doc_id = doc.get("google_doc_id")
+                                 if doc_id and isinstance(doc_id, str) and doc_id.strip():
+                                     valid_documents.append({
+                                         "google_doc_id": doc_id.strip(),
+                                         "data_to_fill": doc.get("data_to_fill", {})
+                                     })
+                                 else:
+                                     st.error(f"Ditemukan dokumen dengan google_doc_id tidak valid: {repr(doc_id)}")
+                             
+                             if not valid_documents:
+                                 st.error("Tidak ada dokumen dengan google_doc_id yang valid untuk dikirim.")
                              else:
-                                  st.warning("Respons dari Apps Script tidak dikenali.")
-                                  st.json(result)
+                                 # Gunakan payload yang sudah divalidasi
+                                 batch_payload["documents"] = valid_documents
+                                 
+                                 st.warning("DEBUG: Payload yang akan dikirim ke Apps Script:")
+                                 st.json(batch_payload) # Tampilkan payload sebelum dikirim
+                                 print(f"batch_payload: {batch_payload}")
+                                 # Kirim payload batch
+                                 response = requests.post(
+                                    apps_script_url,
+                                    headers={'Content-Type': 'application/json'},
+                                    json=batch_payload
+                                 )
+                                 response.raise_for_status()
+                                 result = response.json()
+
+                                 # --- Tampilkan hasil batch ---
+                                 st.subheader("Hasil Pembuatan Dokumen:")
+                                 if result.get("status") == "completed":
+                                     for doc_result in result.get("results", []):
+                                         if doc_result.get("status") == "success":
+                                             st.success(f"✅ Dokumen '{doc_result.get('fileName', 'N/A')}' berhasil dibuat.")
+                                             st.markdown(f"   [🔗 Buka Dokumen]({doc_result.get('docUrl')})")
+                                         else:
+                                             st.error(f"❌ Gagal membuat dokumen dari template ID ...{doc_result.get('templateId', 'N/A')[-12:]}: {doc_result.get('message')}")
+                                 elif result.get("status") == "error":
+                                      st.error(f"Terjadi error global di Apps Script: {result.get('message')}")
+                                 else:
+                                      st.warning("Respons dari Apps Script tidak dikenali.")
+                                      st.json(result)
                     except requests.exceptions.RequestException as req_e: # Specific exception first
                             st.error(f"Gagal mengirim data ke Apps Script (Request Error): {req_e}")
                             # Safely attempt to show response text if available

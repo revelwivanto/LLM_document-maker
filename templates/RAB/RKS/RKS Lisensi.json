@@ -1,0 +1,71 @@
+{
+  "google_doc_id": "1861pavjFfwRvshtsu31_unA2ErPApUcGErxI9F998HI",
+  "placeholders": {
+    "google_doc_id": "",
+    "Format_laporan":{  
+      "instruction":"{report format}",
+      "description":"Format laporan yang harus disediakan vendor untuk bukti pelaksanaan pekerjaan"
+    },
+    "Title": { "instruction": "", "description": "Judul utama pembuatan dokumen atau nama proyek" },
+    "Title_uppercase": { "instruction": "{Title in all uppercase}", "description": "Judul utama pembuatan dokumen atau nama proyek" },
+    "Title_lowercase": {
+        "instruction": "{Title in all lowercase except for abbreviation}",
+        "description": "Judul utama pembuatan dokumen atau nama proyek."
+      },
+    "Pembelian": {
+      "instruction": "{items or services to be purchased}",
+      "description": "Detail barang atau jasa yang ingin debeli, jelaskan perangkat, unit, jumlah, harga dan harga total = jumlah * harga."
+    },
+    "Tujuan": { "instruction": "{barang atau jasa yang ada di [doc_BA]}", "description": "barang atau jasa yang akan diganti" },
+    "Tanggal": { "instruction": "", "description": "Tanggal pembuatan dokumen (format DD/MM/YYYY)" },
+    "Tanggal_tahun": { "instruction": "{extract year from Tanggal}", "description": "Ekstrak tahun dari tanggal pembuatan dokumen" },
+    "Title_summary": { "instruction": "{summarize Title in one sentence}", "description": "Ringkasan satu kalimat dari judul utama dokumen atau nama proyek" },
+    "Pembelian_detail": { "instruction": "{detailed description of Pembelian}", "description": "Uraian rinci tentang barang atau jasa yang akan dibeli" },
+    "Pembelian_summary": { "instruction": "{summarize Pembelian in shorter sentence}", "description": "Ringkasan satu kalimat dari uraian barang yang akan dibeli" },
+    "Pembatalan_garansi": { "instruction": "{possible warranty void of Pembelian}", "description": "Jelaskan kondisi atau tindakan yang dapat menyebabkan pembatalan garansi pada barang yang dibeli" },
+    "Contract_execution": {"instruction": "", "description": "durasi maksimal penyelesaian pekerjaan oleh vendor"},
+    "Vendor": { "instruction": "{name of the vendor}", "description": "nama vendor penyedia lisensi" },
+    "Superintendent_title": { "instruction": "{title of the project superintendent}", "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek" },
+    "Superintendent_name": { "instruction": "{name of the project superintendent}", "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek" },
+    "penandatangan1_title": { "instruction": "{if superintendant name is wahyu wijaya or muhammad annga utama putranto, then the penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the penandatangan1_title will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA }", "description": "jabatan penandatangani1 yang mengatasi superintendant dengan jabatan vp" },
+    "penandatangan1_name": { "instruction": "{if superintendant name is wahyu wijaya or muhammad annga utama putranto, then the penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the penandatangan1_name will be dodo priambodo}", "description": "nama penandatangani1 yang mengatasi superintendant dengan jabatan vp" },
+    "Penerima_title": {
+      "instruction": "{title of the recipient}",
+      "description": "jabatan penerima dokumen"
+    },
+    "Penerima_name": {
+      "instruction": "{name of the recipient}",
+      "description": "nama penerima dokumen"
+    }
+  },
+  "examples": {
+    "Title": "Pengadaan lisensi dan dukungan layanan teknis HP Simplivity untuk perangkat server virtualisasi aplikasi pendukung TOS",
+    "Inti_BA": "Keperluan pembelian laptop untuk mendukung operasional personil TI",
+    "Pembelian": [
+        {
+          "NO": "1",
+          "OBJEK": "laptop Dell Latitude 5430",
+          "JUMLAH": "10",
+          "UNIT": "Unit",
+          "HARGA": "1.000.000",
+          "DETAIL": "spesifikasi i7, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        },
+        {
+          "NO": "2",
+          "OBJEK": "laptop macbook pro 14 inch",
+          "JUMLAH": "5",
+          "UNIT": "Unit",
+          "HARGA": "2.000.000",
+          "DETAIL": "spesifikasi m1, 16GB RAM, 512GB SSD",
+          "HARGA_TOTAL": "10.000.000"
+        }
+      ],
+    "Alasan_summary": "untuk pegawai",
+    "Pembelian_summary": "perangkat laptop beserta aksesorisnya",
+    "Pembatalan_garansi": "Kerusakan unit laptop yang diakibatkan oleh kelalaian user seperti LCD dan atau unit laptop pecah akibat terjatuh atau terbentur",
+    "Contract_execution": "4 (empat) minggu",
+    "Tujuan": "meningkatkan standar kualitas perangkat laptop yang memadai guna mendukung kebutuhan operasional personil TI",
+    "Pembelian_detail": "Memperoleh pendampingan dan dukungan remote akses dari technical support terhadap permintaan dukungan layanan 24 x 7 apabila terjadi permasalahan pada server virtualisasi HP Simplivity ;\nMemperoleh akses 24x7 pada HPE support pada web-based customer support system online;\n"
+  }
+}
