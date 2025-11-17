@@ -526,8 +526,9 @@ if st.session_state.page == "initial_input":
         # Berikan key unik ke text_area DAN simpan widget ke variabel
         initial_prompt_input = st.text_area( # <-- Simpan widget ke variabel ini
             "Deskripsi Kebutuhan:",
-            height=150,
-            placeholder="Contoh: pengadaan fasilitas perangkat laptop penunjang kinerja personil TI Prognosa 2025 100jt. Terpakai 0. Usulan anggaran 17,5jt. Anggaran kalimat tujuh belas koma lima juta. Pos Anggaran VI. 3 (Biaya Perbaikan Aplikasi Infrastruktur). Tanggal 10 Oktober 2025. Rkap 2025 26.401.000.000. Nilai Kontrak po 2025 20.850.959.696. pr 1.165.000.000. budget pembuatan rab & rks 1.628.894.000. harga pembelian 22 jt. pembatalan garansi dilakukan apabila terjadi kelalaian pegawai yang akan ditanggung oleh PT TPS. Contract execution 1 bulan",
+            height=300, # Membuatkan text area dapat di-scroll
+            max_chars=10000, # Membuatkan text area dapat menampung input yang sangat besar
+            placeholder="Contoh: pengadaan fasilitas perangkat laptop penunjang kinerja personil TI \nPrognosa 2025 100jt.\nTerpakai 0.\nUsulan anggaran 17,5jt.\nAnggaran kalimat tujuh belas koma lima juta.\nPos Anggaran VI. 3 (Biaya Perbaikan Aplikasi Infrastruktur).\nTanggal 10 Oktober 2025. Rkap 2025 26.401.000.000.\nNilai Kontrak po 2025 20.850.959.696.\npr 1.165.000.000.\nbudget pembuatan rab & rks 1.628.894.000.\nharga pembelian 22 jt.\npembatalan garansi dilakukan apabila terjadi kelalaian pegawai yang akan ditanggung oleh PT TPS.\nContract execution 1 bulan",
             key="prompt_input_key" # Key tetap ada, berguna nanti
         )
         uploaded_files_list = st.file_uploader(
@@ -704,59 +705,52 @@ elif st.session_state.page == "load_recipes_and_process":
         
 # --- LANGKAH 2: PEMROSESAN AI & VERIFIKASI GABUNGAN ---
 elif st.session_state.page == "processing":
-    st.header("Verifikasi & Lengkapi Data Gabungan")
+    # [ORIGINAL] Header dan validasi awal
+    st.header("Langkah 2: Verifikasi & Lengkapi Data Gabungan")
 
-    # Pastikan resep sudah dimuat dari langkah sebelumnya
     if not st.session_state.get('recipes_to_process'):
         st.error("Resep dokumen tidak ditemukan. Kembali ke langkah awal.")
         if st.button("Kembali"): st.session_state.page = "initial_input"; st.rerun()
         st.stop()
 
-    # --- Gabungkan Placeholders & Examples dari semua resep ---
+    # [ORIGINAL] Gabungkan Placeholders & Examples dari semua resep
     all_placeholders = {}
     all_examples = {}
-    valid_recipes = True # Asumsikan valid karena sudah dicek saat load
-    # Gabungkan placeholder unik dan contoh unik
+    valid_recipes = True
     for pdf_path, recipe_data in st.session_state.recipes_to_process.items():
-        # Validasi lagi untuk keamanan
         if not recipe_data or "placeholders" not in recipe_data or "examples" not in recipe_data:
              st.error(f"Struktur resep untuk {os.path.basename(pdf_path)} tidak valid saat diakses kembali.")
              valid_recipes = False; break
-        # Gabungkan placeholder (ambil definisi dari resep pertama jika ada duplikat)
         for key, value in recipe_data["placeholders"].items():
             if key not in all_placeholders:
                 all_placeholders[key] = value
-        # Gabungkan contoh
         for key, value in recipe_data["examples"].items():
             if key not in all_examples:
                  all_examples[key] = value
 
     if not valid_recipes:
         if st.button("Kembali"): st.session_state.page = "initial_input"; st.rerun()
-        st.stop() # Hentikan jika ada resep tidak valid
+        st.stop()
 
-    # --- Tahap AI First Pass (jika belum dijalankan) ---
+    # [ORIGINAL] Tahap AI First Pass (jika belum dijalankan) - DIPERTAHANKAN
     if 'ai_pass_done' not in st.session_state or not st.session_state.ai_pass_done:
         with st.spinner("AI sedang menganalisis input Anda untuk ekstraksi awal..."):
             initial_data = st.session_state.initial_data
-            # Panggil AI dengan gabungan placeholders & examples
             ai_result = run_ai_first_pass(
                 initial_prompt=initial_data["prompt"],
                 file_uploads=initial_data["files"],
-                all_placeholders=all_placeholders, # Kirim gabungan
-                all_examples=all_examples        # Kirim gabungan
+                all_placeholders=all_placeholders,
+                all_examples=all_examples
             )
-            # Simpan hasil AI (bahkan jika kosong atau error)
             st.session_state.ai_extracted_data = ai_result if ai_result else {}
             st.session_state.ai_pass_done = True
-        st.rerun() # Muat ulang untuk menampilkan hasil AI dan form verifikasi
+        st.rerun()
 
-    # --- Tampilkan Hasil AI & Formulir Verifikasi ---
+    # [MODIFIED] Tampilkan Hasil AI & Formulir Verifikasi dengan visual indicator
     ai_data = st.session_state.ai_extracted_data
 
-    st.info("AI telah mencoba mengekstrak informasi berikut untuk semua dokumen. Silakan periksa, perbaiki, dan lengkapi.")
+    st.info("AI telah mencoba mengekstrak informasi berikut untuk semua dokumen. Silakan periksa, perbaiki, dan lengkapi data manual di bawah ini.")
     with st.expander("Lihat Hasil Mentah Ekstraksi AI"):
-        # Tampilkan error jika ada
         if isinstance(ai_data, dict) and "error" in ai_data:
              st.error(f"Ekstraksi AI gagal: {ai_data['error']}")
         elif not ai_data:
@@ -767,52 +761,91 @@ elif st.session_state.page == "processing":
     with st.form("verification_form_combined"):
         st.markdown("**Data Gabungan untuk Dokumen (Silakan Edit/Lengkapi):**")
         widget_keys = {}
+        # [NEW] Track AI task keys untuk proses sequential
+        ai_task_keys = set()
 
-        # Loop melalui GABUNGAN placeholder yang BUKAN kalkulasi
+        # [MERGED] Loop dengan pendeteksi tipe dari MODIFIED tapi logika input dari ORIGINAL
         for key, value_obj in all_placeholders.items():
             if not key.endswith("_CALCULATED"):
                 label = f"{key.replace('_', ' ').title()}:"
-                # Dapatkan nilai awal dari hasil AI jika ada
-                ai_extracted_value = ai_data.get(key) if isinstance(ai_data, dict) else None # Handle jika ai_data error
-                # Tentukan tipe input berdasarkan nilai default di resep (struktur baru)
+                ai_extracted_value = ai_data.get(key) if isinstance(ai_data, dict) else None
                 instruction_or_default = value_obj.get("instruction") if isinstance(value_obj, dict) else value_obj
                 widget_key = f"input_{key}"
                 widget_keys[key] = widget_key
 
-                # Buat input teks atau angka (editable)
-                if isinstance(instruction_or_default, str):
-                    default_value_txt = str(ai_extracted_value) if ai_extracted_value is not None else ""
-                    if key in ["Isi_BA", "Bukti_BA", "Alasan", "Alasan_detail"] or len(default_value_txt) > 80: # Heuristik untuk text area
-                        st.text_area(label, value=default_value_txt, key=widget_key, height=100)
-                    else:
-                        st.text_input(label, value=default_value_txt, key=widget_key)
-                elif instruction_or_default is None or isinstance(instruction_or_default, (int, float)):
-                    default_value_num = None
-                    if ai_extracted_value is not None:
-                        try:
-                            cleaned_val_str = re.sub(r'(IDR|\s|,-?$)', '', str(ai_extracted_value))
-                            if cleaned_val_str: default_value_num = float(cleaned_val_str) if '.' in cleaned_val_str else int(cleaned_val_str)
-                        except: default_value_num = None
-                    st.number_input(label, value=default_value_num, format=None, key=widget_key)
+                # [NEW] Deteksi field AI dan tambahkan visual indicator
+                is_ai_task = isinstance(instruction_or_default, str) and instruction_or_default.startswith("{")
+                if is_ai_task:
+                    ai_task_keys.add(key)
+                    label = f"(AI) {label}"  # Visual indicator dari MODIFIED
+                    default_value = str(ai_extracted_value) if ai_extracted_value is not None else ""
+                    # [MODIFIED] Gunakan text_area untuk AI field agar bisa diedit
+                    st.text_area(label, value=default_value, key=widget_key, height=100)
+                else:
+                    # [ORIGINAL] Gunakan logika asli untuk field non-AI
+                    if isinstance(instruction_or_default, str):
+                        default_value_txt = str(ai_extracted_value) if ai_extracted_value is not None else ""
+                        # [ORIGINAL] Heuristik untuk textarea
+                        if key in ["Isi_BA", "Bukti_BA", "Alasan", "Alasan_detail"] or len(default_value_txt) > 80:
+                            st.text_area(label, value=default_value_txt, key=widget_key, height=100)
+                        else:
+                            st.text_input(label, value=default_value_txt, key=widget_key)
+                    elif instruction_or_default is None or isinstance(instruction_or_default, (int, float)):
+                        default_value_num = None
+                        if ai_extracted_value is not None:
+                            # [ORIGINAL] Pembersihan regex untuk angka
+                            try:
+                                cleaned_val_str = re.sub(r'(IDR|\s|,-?$)', '', str(ai_extracted_value))
+                                if cleaned_val_str: default_value_num = float(cleaned_val_str) if '.' in cleaned_val_str else int(cleaned_val_str)
+                            except: default_value_num = None
+                        st.number_input(label, value=default_value_num, format=None, key=widget_key)
 
-
-        verification_submitted = st.form_submit_button("Verifikasi Selesai, Lanjutkan ke Pembuatan Dokumen")
+        # [MODIFIED] Tombol dengan teks baru
+        verification_submitted = st.form_submit_button("Verifikasi Selesai, Jalankan AI & Kalkulasi")
 
         if verification_submitted:
-            # Kumpulkan data yang diverifikasi pengguna dari state widget
+            # [ORIGINAL] Kumpulkan data dari form
             user_verified_data = {key: st.session_state[widget_skey] for key, widget_skey in widget_keys.items()}
 
-            if "Bukti_BA" in user_verified_data and isinstance(user_verified_data["Bukti_BA"], str):
-                bukti_ba_str = user_verified_data["Bukti_BA"].strip()
-                # Hanya coba parse jika terlihat seperti list/array
+            # [NEW] Jalankan AI sequential & kalkulasi dengan status message
+            with st.spinner("Menjalankan tugas AI & kalkulasi..."):
+                final_data = user_verified_data.copy()
+                
+                # [MODIFIED] Proses AI task secara berurutan untuk dependensi
+                for key in ai_task_keys:
+                    user_value = final_data.get(key, "")
+                    instruction = all_placeholders[key].get("instruction", "") if isinstance(all_placeholders[key], dict) else ""
+                    
+                    # [MODIFIED] Lewati jika field dikosongkan oleh user
+                    if not user_value.strip():
+                        st.write(f"⏭️ Melewatkan tugas AI untuk `{key}` (dihapus oleh pengguna).")
+                        continue
+                    
+                    # [MODIFIED] Hanya jalankan AI jika user tidak edit isi task
+                    if instruction.startswith("{") and user_value.startswith("{"):
+                        st.write(f"🤖 Menjalankan tugas AI untuk `{key}`...")
+                        # CATATAN: Fungsi execute_ai_task() harus didefinisikan atau diganti dengan adaptasi run_ai_first_pass()
+                        ai_result = execute_ai_task(
+                            key=key,
+                            task=instruction,
+                            initial_prompt=st.session_state.initial_data["prompt"],
+                            file_uploads=st.session_state.initial_data["files"],
+                            processed_data=final_data,
+                            recipe=st.session_state.recipe
+                        )
+                        final_data[key] = ai_result
+                    else:
+                        st.write(f"✍️ Menggunakan data yang diedit manual untuk `{key}`.")
+
+            # [ORIGINAL] Parsing spesial untuk Bukti_BA dengan semua error handling
+            if "Bukti_BA" in final_data and isinstance(final_data["Bukti_BA"], str):
+                bukti_ba_str = final_data["Bukti_BA"].strip()
                 if bukti_ba_str.startswith('[') and bukti_ba_str.endswith(']'):
-                    st.write("DEBUG: Mencoba mem-parsing string Bukti_BA...") # Debug message
+                    st.write("DEBUG: Mencoba mem-parsing string Bukti_BA...")
                     try:
-                        # Gunakan ast.literal_eval untuk parsing aman string Python
                         parsed_bukti_ba = ast.literal_eval(bukti_ba_str)
-                        # Verifikasi hasilnya adalah list
                         if isinstance(parsed_bukti_ba, list):
-                            user_verified_data["Bukti_BA"] = parsed_bukti_ba # Ganti string dengan list
+                            final_data["Bukti_BA"] = parsed_bukti_ba
                             st.write("DEBUG: Parsing Bukti_BA berhasil.")
                         else:
                             st.warning("Hasil parsing Bukti_BA bukan list. Mempertahankan string.")
@@ -822,20 +855,17 @@ elif st.session_state.page == "processing":
                     except Exception as e:
                         st.error(f"Error tak terduga saat parsing Bukti_BA: {e}")
                 else:
-                    # Jika tidak terlihat seperti list, mungkin memang teks biasa
                     st.write("DEBUG: Bukti_BA adalah string tapi tidak terlihat seperti list, tidak di-parse.")
             
-            if "Pembelian" in user_verified_data and isinstance(user_verified_data["Pembelian"], str):
-                pembelian_str = user_verified_data["Pembelian"].strip()
-                # Hanya coba parse jika terlihat seperti list/array
+            # [ORIGINAL] Parsing spesial untuk Pembelian dengan semua error handling
+            if "Pembelian" in final_data and isinstance(final_data["Pembelian"], str):
+                pembelian_str = final_data["Pembelian"].strip()
                 if pembelian_str.startswith('[') and pembelian_str.endswith(']'):
-                    st.write("DEBUG: Mencoba mem-parsing string Pembelian...") # Debug message
+                    st.write("DEBUG: Mencoba mem-parsing string Pembelian...")
                     try:
-                        # Gunakan ast.literal_eval untuk parsing aman string Python
                         parsed_pembelian = ast.literal_eval(pembelian_str)
-                        # Verifikasi hasilnya adalah list
                         if isinstance(parsed_pembelian, list):
-                            user_verified_data["Pembelian"] = parsed_pembelian # Ganti string dengan list
+                            final_data["Pembelian"] = parsed_pembelian
                             st.write("DEBUG: Parsing Pembelian berhasil.")
                         else:
                             st.warning("Hasil parsing Pembelian bukan list. Mempertahankan string.")
@@ -845,16 +875,19 @@ elif st.session_state.page == "processing":
                     except Exception as e:
                         st.error(f"Error tak terduga saat parsing Pembelian: {e}")
                 else:
-                    # Jika tidak terlihat seperti list, mungkin memang teks biasa
                     st.write("DEBUG: Pembelian adalah string tapi tidak terlihat seperti list, tidak di-parse.")
 
-            # Lakukan kalkulasi pada data gabungan yang sudah diverifikasi
-            st.session_state.final_combined_data = perform_calculations(all_placeholders, user_verified_data)
+            # [MODIFIED] Status message untuk kalkulasi
+            st.write("🧮 Melakukan kalkulasi otomatis...")
+            st.session_state.final_combined_data = perform_calculations(all_placeholders, final_data)
+            
+            # [MODIFIED] Cache hasil AI untuk run berikutnya
+            st.session_state.ai_extracted_data = final_data.copy()
 
-            st.session_state.page = "results" # Pindah ke halaman hasil
-            # Hapus state sementara
+            # [ORIGINAL] Transisi ke halaman hasil
+            st.session_state.page = "results"
             if 'ai_pass_done' in st.session_state: del st.session_state['ai_pass_done']
-            st.rerun() # Muat ulang untuk menampilkan hasil akhir
+            st.rerun()
 
 # --- LANGKAH 3: HASIL AKHIR & PENGIRIMAN BATCH ---
 elif st.session_state.page == "results":

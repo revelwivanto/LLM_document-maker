@@ -15,11 +15,11 @@
       "description": "Ringkasan pendek satu kalimat dari uraian barang yang akan dibeli"
     },
     "Nama_penerima": {
-      "instruction": "{capitalize each word of the recipient name}",
+      "instruction": "{capitalize}",
       "description": "Nama penerima dokumen."
     },
     "Jabatan_penerima": {
-      "instruction": "",
+      "instruction": "{capitalize}",
       "description": "Jabatan resmi penerima dokumen."
     },
     "Usulan_anggaran": {
@@ -32,15 +32,15 @@
       "instruction": "{format: day month year}",
       "description": "Tanggal pembuatan dokumen."
     },
-    "Superintendent_title": { "instruction": "{title of the project superintendent all uppercase}", "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek" },
-    "Superintendent_name": { "instruction": "{name of the project superintendentall uppercase}", "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek" },
-    "Penandatangan1_name": {
-        "instruction": "{if superintendant name is 'wahyu wijaya' or 'muhammad angga utama putranto', then the Penandatangan1_title will be 'VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA', else if superintendant name is 'Kang David' or 'Rio Setiady Prismarendra', then the Penandatangan1_name will be 'DODO PRIAMBODO 'all uppercase}",
-        "description": "nama penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    "Superintendent_title_uppercase": { "instruction": "{title of the project superintendent all uppercase}", "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek (all uppercase)" },
+    "Superintendent_name_uppercase": { "instruction": "{name of the project superintendentall uppercase}", "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek (all uppercase)" },
+    "Penandatangan1_name_uppercase": {
+        "instruction": "{if superintendant name is 'wahyu wijaya' or 'muhammad angga utama putranto', then the Penandatangan1_title_uppercase will be 'VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA', else if superintendant name is 'Kang David' or 'Rio Setiady Prismarendra', then the Penandatangan1_name_uppercase will be 'DODO PRIAMBODO 'all uppercase}",
+        "description": "nama Penandatangani1 yang mengatasi superintendant dengan jabatan vp"
     },
-    "Penandatangan1_title": {
-        "instruction": "{if superintendant name is 'wahyu wijaya or muhammad angga utama putranto', then the Penandatangan1_title will be 'VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA', else if superintendant name is 'Kang David' or 'Rio Setiady Prismarendra', then the Penandatangan1_title will be 'VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA' all uppercase}",
-        "description": "jabatan penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    "Penandatangan1_title_uppercase": {
+        "instruction": "{if superintendant name is 'wahyu wijaya or muhammad angga utama putranto', then the Penandatangan1_title_uppercase will be 'VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA', else if superintendant name is 'Kang David' or 'Rio Setiady Prismarendra', then the Penandatangan1_title_uppercase will be 'VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA' all uppercase}",
+        "description": "jabatan Penandatangani1 yang mengatasi superintendant dengan jabatan vp"
     }
   },
   "examples": {

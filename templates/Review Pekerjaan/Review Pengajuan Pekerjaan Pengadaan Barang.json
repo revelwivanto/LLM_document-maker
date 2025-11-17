@@ -21,9 +21,13 @@
       "instruction": "{make each word start with capital}",
       "description": "Judul utama pembuatan dokumen atau nama proyek."
     },
-    "Title_lowercase": {
-      "instruction": "{Title in all lowercase except for abbreviation}",
-      "description": "Judul utama pembuatan dokumen atau nama proyek."
+    "Title_summary": {
+      "instruction": "{summarize Title in one sentence}",
+      "description": "Ringkasan satu kalimat dari judul utama dokumen atau nama proyek"
+    },
+    "Pembelian": {
+      "instruction": "",
+      "description": "Nama atau uraian barang yang akan dibeli."
     },
     "Prognosa_2025": {
       "instruction": null,
@@ -54,7 +58,6 @@
   "examples": {
     "BA": "SI.02/4/12/3/D4.3.2/D/TPSS-24",
     "Title": "Perangkat Laptop Sebagai Penunjang Kinerja Personil TI",
-    "Title_lowercase": "perangkat laptop sebagai penunjang kinerja personil TI",
     "Tujuan": "meningkatkan standar kualitas perangkat laptop yang memadai guna mendukung kebutuhan operasional personil TI",
     "Tanggal": "23 November 2024",
     "Isi_BA": "berdasarkan hasil diskusi dengan divisi Human Resource, ditemukan laptop personil mengganggu operasional, maka diperlukan perangkat laptop sebagai penunjang kinerja personil TI",

@@ -27,7 +27,10 @@
     "Pembelian_summary": {
       "instruction": "{summarize Pembelian in shorter sentence}",
       "description": "Ringkasan pendek satu kalimat dari uraian barang yang akan dibeli"
-    }
+    },
+    "Paragraf_Pembuka_nodin": {
+      "instruction": "{Long and detailed opening paragraph that has to contain the full content of: Tujuan, {Isi_BA}, {BA}, dan {Inti_BA}.}", 
+      "description": "Paragraf pembuka yang menjelaskan maksud dan tujuan dari nota dinas ini." }
   },
   "examples": {
     "BA": "SI.02/4/12/3/D4.3.2/D/TPSS-24",
@@ -74,6 +77,7 @@
     "Alasan": "kebutuhan mendesak untuk menghindari potensi resiko tinggi (high risk) apabila terjadi kerusakan lebih dari 1 (satu) unit HDD.",
     "Alasan_detail": "Semua User Computer dan Server tidak bisa Logon Desktop dan otomatis semua operasional\nkomputerisasi di seluruh PT.TPS akan terhenti;\nTerjadi kegagalan sinkronisasi User On Premises ke Cloud;\nPenggantian password log on tidak dapat dilakukan;\nTerjadi permasalahan pada time synch antar semua server dan workstation akibat perbedaan\nwaktudi system server;\nTidak ada backup Server DHCP dan tidak ada Backup Server DNS yang akan menjadi critical\npoint, sehingga komunikasi antara semua aplikasi, semua server, dan Client Workstation akan\nterhenti semua (termasuk semua intra network dan internet).",
     "Anggaran_kalimat": "Tujuh Belas Juta Lima Ratus Ribu Rupiah",
-    "Tujuan": "meningkatkan standar kualitas perangkat laptop yang memadai guna mendukung kebutuhan operasional personil TI"
+    "Tujuan": "meningkatkan standar kualitas perangkat laptop yang memadai guna mendukung kebutuhan operasional personil TI",
+    "Paragraf_Pembuka_nodin":"sebagai tindak lanjut atas kebutuhan penggantian perangkat yang mengalami kerusakan, disampaikan bahwa berdasarkan hasil pemeriksaan terhadap pencatatan tiket layanan TI pada aplikasi ITSM, ditemukan adanya kerusakan pada perangkat HDD Server TPSHVS3. Temuan tersebut telah dituangkan dalam Berita Acara Pemeriksaan Nomor: SI.02/10/10/1/D4.3.2/D/TPSS-25 tentang Laporan Hasil Pemeriksaan Perangkat HDD Server TPSHVS3"
   }
 }

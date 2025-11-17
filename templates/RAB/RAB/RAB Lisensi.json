@@ -25,8 +25,8 @@
       "instruction": "",
       "description": "Tanggal pembuatan dokumen (format DD/MM/YYYY)."
     },
-    "Pendandatangan1_title": { "instruction": "{if superintendant name is wahyu wijaya or muhammad annga utama putranto, then the pendandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the pendandatangan1_title will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA }", "description": "jabatan penandatangani1 yang mengatasi superintendant dengan jabatan vp" },
-    "Pendandatangan1_name": { "instruction": "{if superintendant name is wahyu wijaya or muhammad annga utama putranto, then the pendandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the pendandatangan1_name will be dodo priambodo}", "description": "nama penandatangani1 yang mengatasi superintendant dengan jabatan vp" },
+    "Pendandatangan1_title": { "instruction": "{if superintendant name is wahyu wijaya or muhammad annga utama putranto, then the pendandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the pendandatangan1_title will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA (all uppercase) }", "description": "jabatan Penandatangani1 yang mengatasi superintendant dengan jabatan vp" },
+    "Pendandatangan1_name": { "instruction": "{if superintendant name is wahyu wijaya or muhammad annga utama putranto, then the pendandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the pendandatangan1_name will be dodo priambodo}", "description": "nama Penandatangani1 yang mengatasi superintendant dengan jabatan vp" },
     "Penerima_title": {
       "instruction": "{title of the recipient}",
       "description": "jabatan penerima dokumen"

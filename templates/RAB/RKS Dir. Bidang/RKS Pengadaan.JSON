@@ -54,28 +54,28 @@
       "instruction": "{summarize Pembelian in shorter sentence}",
       "description": "Ringkasan pendek satu kalimat dari uraian barang yang akan dibeli"
     },
-    "Superintendent_title": {
+    "Superintendent_title_uppercase": {
       "instruction": "{title of the project superintendent all uppercase}",
-      "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek"
+      "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek (all uppercase)"
     },
-    "Superintendent_name": {
+    "Superintendent_name_uppercase": {
       "instruction": "{name of the project superintendent all uppercase}",
-      "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek"
+      "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek (all uppercase)"
     },
-    "Penandatangan1_title": {
-      "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_title will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA all uppercase}",
-      "description": "jabatan penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    "Penandatangan1_title_uppercase": {
+      "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title_uppercase will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_title_uppercase will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA (all uppercase) all uppercase}",
+      "description": "jabatan Penandatangani1 yang mengatasi superintendant dengan jabatan vp"
     },
-    "Penandatangan1_name": {
-      "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_name will be dodo priambodo all uppercase}",
-      "description": "nama penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    "Penandatangan1_name_uppercase": {
+      "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_name_uppercase will be HENDRA GUNAWAN WAHYU WIJAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_name_uppercase will be dodo priambodo (all uppercase) all uppercase}",
+      "description": "nama Penandatangani1 yang mengatasi superintendant dengan jabatan vp"
     },
     "Nama_penerima": {
-      "instruction": "{capitalize each word of the recipient name}",
+      "instruction": "{capitalize}",
       "description": "Nama penerima dokumen."
     },
     "Jabatan_penerima": {
-      "instruction": "",
+      "instruction": "{capitalize}",
       "description": "Jabatan resmi penerima dokumen."
     },
     "Tanggal": {

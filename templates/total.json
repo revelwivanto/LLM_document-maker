@@ -37,11 +37,11 @@
       "description": "Satu kalimat inti yang merangkum 'Isi_BA'."
     },
     "Jabatan_penerima": {
-      "instruction": "",
+      "instruction": "{capitalize}",
       "description": "Jabatan resmi penerima dokumen."
     },
     "Nama_penerima": {
-      "instruction": "{capitalize each word of the recipient name}",
+      "instruction": "{capitalize}",
       "description": "Nama penerima dokumen."
     },
     "Jumlah_pembelian": {
@@ -77,21 +77,21 @@
       "instruction": "{summarize Pembelian in shorter sentence}",
       "description": "Ringkasan pendek satu kalimat dari uraian barang yang akan dibeli"
     },
-    "Superintendent_name": {
+    "Superintendent_name_uppercase": {
       "instruction": "{name of the project superintendent all uppercase}",
-      "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek"
+      "description": "Nama pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek (all uppercase)"
     },
-    "Superintendent_title": {
+    "Superintendent_title_uppercase": {
       "instruction": "{title of the project superintendent all uppercase}",
-      "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek"
+      "description": "jabatan pengawas proyek atau superintendent yang bertanggung jawab atas pelaksanaan proyek (all uppercase)"
     },
-    "Penandatangan1_name": {
-        "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_name will be dodo priambodo all uppercase}",
-        "description": "nama penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    "Penandatangan1_name_uppercase": {
+        "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_name_uppercase will be HENDRA GUNAWAN WAHYU WIJAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_name_uppercase will be dodo priambodo (all uppercase) all uppercase}",
+        "description": "nama Penandatangani1 yang mengatasi superintendant dengan jabatan vp"
     },
-    "Penandatangan1_title": {
-        "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_title will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA all uppercase}",
-        "description": "jabatan penandatangani1 yang mengatasi superintendant dengan jabatan vp"
+    "Penandatangan1_title_uppercase": {
+        "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title_uppercase will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_title_uppercase will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA (all uppercase) all uppercase}",
+        "description": "jabatan Penandatangani1 yang mengatasi superintendant dengan jabatan vp"
     },
     "Persen_RKAP_CALCULATED": "(Sisa_anggaran_departemen / RKAP_2025) * 100",
     "Pos_anggaran": {
@@ -153,6 +153,9 @@
       "instruction": "{make Usulan_anggaran to a sentence}",
       "description": "Ubah angka 'Usulan_anggaran' menjadi kalimat terbilang dalam Rupiah."
     },
+    "Paragraf_Pembuka_nodin": {
+      "instruction": "{Long and detailed opening paragraph that has to contain the full content of: Tujuan, {Isi_BA}, {BA}, dan {Inti_BA}.}", 
+      "description": "Paragraf pembuka yang menjelaskan maksud dan tujuan dari nota dinas ini." },
     "examples": {
       "BA": "SI.02/4/12/3/D4.3.2/D/TPSS-24",
       "Title": "Perangkat Laptop Sebagai Penunjang Kinerja Personil TI",
@@ -208,7 +211,8 @@
       "Usulan_anggaran": 17500000,
       "Anggaran_kalimat": "Tujuh Belas Juta Lima Ratus Ribu Rupiah",
       "Jumlah_pembelian": 1,
-      "Satuan_pembelian": "Unit"
+      "Satuan_pembelian": "Unit",
+      "Paragraf_Pembuka_nodin":"sebagai tindak lanjut atas kebutuhan penggantian perangkat yang mengalami kerusakan, disampaikan bahwa berdasarkan hasil pemeriksaan terhadap pencatatan tiket layanan TI pada aplikasi ITSM, ditemukan adanya kerusakan pada perangkat HDD Server TPSHVS3. Temuan tersebut telah dituangkan dalam Berita Acara Pemeriksaan Nomor: SI.02/10/10/1/D4.3.2/D/TPSS-25 tentang Laporan Hasil Pemeriksaan Perangkat HDD Server TPSHVS3"
     }
   }
 }
