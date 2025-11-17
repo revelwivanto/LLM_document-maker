@@ -26,7 +26,7 @@
             "instruction": "{if superintendant name is wahyu wijaya or muhammad angga utama putranto, then the Penandatangan1_title_uppercase will be VICE PRESIDENT INFRASTRUKTUR TI PT TERMINAL PETIKEMAS SURABAYA, else if superintendant name is Kang David or Rio Setiady Prismarendra, then the Penandatangan1_title_uppercase will be  VICE PRESIDENT PERANGKAT LUNAK PT TERMINAL PETIKEMAS SURABAYA (all uppercase) all uppercase}",
             "description": "jabatan Penandatangani1 yang mengatasi superintendant dengan jabatan vp"
         },
-        "Paragraf_Pembuka_nodin": {
+        "Paragraf_pembuka": {
             "instruction": "{Long and detailed opening paragraph that has to contain the full content of: Tujuan, {Isi_BA}, {BA}, dan {Inti_BA}.}", 
             "description": "Paragraf pembuka yang menjelaskan maksud dan tujuan dari nota dinas ini." }
     },
