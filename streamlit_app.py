@@ -526,7 +526,7 @@ if st.session_state.page == "initial_input":
         # Berikan key unik ke text_area DAN simpan widget ke variabel
         initial_prompt_input = st.text_area( # <-- Simpan widget ke variabel ini
             "Deskripsi Kebutuhan:",
-            height=300, # Membuatkan text area dapat di-scroll
+            height=500, # Membuatkan text area dapat di-scroll
             max_chars=10000, # Membuatkan text area dapat menampung input yang sangat besar
             placeholder="Contoh: pengadaan fasilitas perangkat laptop penunjang kinerja personil TI \nPrognosa 2025 100jt.\nTerpakai 0.\nUsulan anggaran 17,5jt.\nAnggaran kalimat tujuh belas koma lima juta.\nPos Anggaran VI. 3 (Biaya Perbaikan Aplikasi Infrastruktur).\nTanggal 10 Oktober 2025. Rkap 2025 26.401.000.000.\nNilai Kontrak po 2025 20.850.959.696.\npr 1.165.000.000.\nbudget pembuatan rab & rks 1.628.894.000.\nharga pembelian 22 jt.\npembatalan garansi dilakukan apabila terjadi kelalaian pegawai yang akan ditanggung oleh PT TPS.\nContract execution 1 bulan",
             key="prompt_input_key" # Key tetap ada, berguna nanti
