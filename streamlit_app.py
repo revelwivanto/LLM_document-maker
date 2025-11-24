@@ -124,17 +124,29 @@ st.markdown(
     </style>
     ''', unsafe_allow_html=True)
 
-# Konfigurasi API Key Gemini (PENTING: Gunakan Streamlit Secrets saat deploy)
+# --- Konfigurasi API Key (Hybrid: Server & Lokal) ---
 try:
-    # Coba muat API key dari secrets (untuk deployment)
-    api_key =st.secrets.get("GEMINI_API") # GANTIKAN DENGAN st.secrets["GEMINI_API"] SAAT DEPLOY
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-2.5-flash') # Menggunakan model yang lebih baru jika tersedia
-except (KeyError, FileNotFoundError):
-    # Fallback jika secrets tidak ada (misalnya saat testing lokal)
-    st.warning("GEMINI_API tidak ditemukan di Streamlit Secrets. Pastikan Anda telah mengkonfigurasinya untuk deployment.")
-    st.error("Model AI tidak dapat dikonfigurasi. Aplikasi tidak dapat melanjutkan.")
-    model = None # Set model ke None jika konfigurasi gagal
+    # 1. Coba ambil dari Environment Variable (Ini yang akan bekerja di SERVER / Systemd)
+    # Pastikan nama variabel di sini SAMA PERSIS dengan di file systemd Anda
+    api_key = os.environ.get("GEMINI_API_KEY") 
+
+    # 2. Jika tidak ada di Server, coba ambil dari st.secrets (Ini untuk testing LOKAL)
+    if not api_key:
+        # Gunakan .get() agar tidak error jika tidak ada file secrets
+        # Pastikan key di secrets.toml Anda bernama "GEMINI_API_KEY" atau sesuaikan
+        api_key = st.secrets.get("GEMINI_API_KEY")
+
+    # 3. Validasi dan Konfigurasi
+    if not api_key:
+        st.error("CRITICAL ERROR: API Key tidak ditemukan di Environment Server maupun Secrets Lokal.")
+        st.stop() # Hentikan aplikasi agar tidak crash di bawah
+    else:
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-2.5-flash')
+
+except Exception as e:
+    st.error(f"Terjadi kesalahan konfigurasi model AI: {e}")
+    model = None
 
 # Inisialisasi session state
 if 'page' not in st.session_state: st.session_state.page = "initial_input"
