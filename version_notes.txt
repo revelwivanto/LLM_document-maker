@@ -1,4 +1,0 @@
-streamlit_app: the flow
-prototype: the usable version with chosen docs
-alpha: only create rab,rks, nodin
-beta: added global variable
