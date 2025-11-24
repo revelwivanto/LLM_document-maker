@@ -232,10 +232,6 @@ def run_ai_first_pass(initial_prompt, file_uploads, all_placeholders, all_exampl
         st.error("Model AI tidak dikonfigurasi.")
         return {"error": "MODEL_AI_TIDAK_TERKONFIGURASI"}
 
-    # --- TAMBAHAN DEBUGGING: Periksa nilai initial_prompt ---
-    st.warning(f"DEBUG: Nilai 'initial_prompt' yang diterima fungsi: '{initial_prompt}'")
-    # --- AKHIR TAMBAHAN DEBUGGING ---
-
     # Pastikan initial_prompt adalah string, meskipun kosong
     prompt_text = initial_prompt if initial_prompt else ""
 
@@ -821,32 +817,17 @@ elif st.session_state.page == "processing":
                         st.write(f"⏭️ Melewatkan tugas AI untuk `{key}` (dihapus oleh pengguna).")
                         continue
                     
-                    # [MODIFIED] Hanya jalankan AI jika user tidak edit isi task
-                    if instruction.startswith("{") and user_value.startswith("{"):
-                        st.write(f"🤖 Menjalankan tugas AI untuk `{key}`...")
-                        # CATATAN: Fungsi execute_ai_task() harus didefinisikan atau diganti dengan adaptasi run_ai_first_pass()
-                        ai_result = execute_ai_task(
-                            key=key,
-                            task=instruction,
-                            initial_prompt=st.session_state.initial_data["prompt"],
-                            file_uploads=st.session_state.initial_data["files"],
-                            processed_data=final_data,
-                            recipe=st.session_state.recipe
-                        )
-                        final_data[key] = ai_result
-                    else:
-                        st.write(f"✍️ Menggunakan data yang diedit manual untuk `{key}`.")
+                    # [MODIFIED] Gunakan nilai yang diedit user
+                    final_data[key] = user_value
 
             # [ORIGINAL] Parsing spesial untuk Bukti_BA dengan semua error handling
             if "Bukti_BA" in final_data and isinstance(final_data["Bukti_BA"], str):
                 bukti_ba_str = final_data["Bukti_BA"].strip()
                 if bukti_ba_str.startswith('[') and bukti_ba_str.endswith(']'):
-                    st.write("DEBUG: Mencoba mem-parsing string Bukti_BA...")
                     try:
                         parsed_bukti_ba = ast.literal_eval(bukti_ba_str)
                         if isinstance(parsed_bukti_ba, list):
                             final_data["Bukti_BA"] = parsed_bukti_ba
-                            st.write("DEBUG: Parsing Bukti_BA berhasil.")
                         else:
                             st.warning("Hasil parsing Bukti_BA bukan list. Mempertahankan string.")
                     except (ValueError, SyntaxError) as parse_error:
@@ -861,12 +842,10 @@ elif st.session_state.page == "processing":
             if "Pembelian" in final_data and isinstance(final_data["Pembelian"], str):
                 pembelian_str = final_data["Pembelian"].strip()
                 if pembelian_str.startswith('[') and pembelian_str.endswith(']'):
-                    st.write("DEBUG: Mencoba mem-parsing string Pembelian...")
                     try:
                         parsed_pembelian = ast.literal_eval(pembelian_str)
                         if isinstance(parsed_pembelian, list):
                             final_data["Pembelian"] = parsed_pembelian
-                            st.write("DEBUG: Parsing Pembelian berhasil.")
                         else:
                             st.warning("Hasil parsing Pembelian bukan list. Mempertahankan string.")
                     except (ValueError, SyntaxError) as parse_error:
@@ -974,9 +953,7 @@ elif st.session_state.page == "results":
                                  # Gunakan payload yang sudah divalidasi
                                  batch_payload["documents"] = valid_documents
                                  
-                                 st.warning("DEBUG: Payload yang akan dikirim ke Apps Script:")
-                                 st.json(batch_payload) # Tampilkan payload sebelum dikirim
-                                 print(f"batch_payload: {batch_payload}")
+
                                  # Kirim payload batch
                                  response = requests.post(
                                     apps_script_url,
